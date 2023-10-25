@@ -15,6 +15,7 @@ p_cell Create_cell(int level, int val){
 
 void Display_cell(p_cell cell){
     printf("[ %d|@-]", cell->value);
+    return;
 }
 
 t_list Create_list(int max_level){
@@ -27,8 +28,13 @@ t_list Create_list(int max_level){
     return mylist;
 }
 
-void Add_Head_list(t_list*, p_cell){
-
+void Add_Head_list(t_list* mylist, int val, int level){
+    p_cell newcell = Create_cell(level, val);
+    for(int i = 0; i < newcell->level; i++){
+        newcell->next[i] = mylist->head[i];
+        mylist->head[i] = newcell;
+    }
+    return;
 }
 
 void Display_list_level(t_list mylist, int level){
@@ -41,20 +47,69 @@ void Display_list_level(t_list mylist, int level){
     p_cell temp = mylist.head[level];
     while(temp != NULL){
         Display_cell(temp);
+        printf("-->");
         temp = temp->next[level];
     }
     printf("NULL\n");
+    return;
 }
 
-void Display_All_list(t_list mylist, int level){
-    if (level != mylist.max_level)
-        Display_list_level(mylist, level++);
+void Display_All_list(t_list mylist){
+    for(int i = 0; i < mylist.max_level; i++){
+        Display_list_level(mylist, i);
+    }
+    return;
 }
 
-void Display_All_list_aligne(t_list){
+void Display_All_list_aligne(t_list mylist){
+    Display_list_level(mylist, 0);
+    printf("[list head_%d @-]", 1);
+    int nbCell = 0;
+    p_cell temp_0 = mylist.head[0], temp_level = mylist.head[1];
+    while(temp_0 != NULL){
+        if(temp_level == temp_0){
+            for(int i = 0; i < nbCell; i++){
+                printf("--------");
+            }
+            printf("-->");
+            Display_cell(temp_level);
+        }
+        temp_0 = temp_0->next[0];
+        nbCell++;
+    }
 
+    printf(">NULL\n");
+    return;
 }
 
-void Add_cell(t_list*, p_cell){
+void Add_cell_level(t_list* mylist, p_cell newcell, int level){
+    if (mylist->head[level] == NULL){
+        mylist->head[level] = newcell;
+        return;
+    }
+    if (mylist->head[level]->value > newcell->value){
+        newcell->next[level] = mylist->head[level];
+        mylist->head[level] = newcell;
+        return;
+    }
+    p_cell temp = mylist->head[level], prev = temp;
+    while (temp != NULL){
+        if(newcell->value > prev->value && newcell->value <= temp->value){
+            prev->next[level] = newcell;
+            newcell->next[level] = temp;
+            return;
+        }
+        prev = temp;
+        temp = temp->next[level];
+    }
+    prev->next[level] = newcell;
+    return;
+}
 
+void Add_cell(t_list* mylist, int val, int level){
+    p_cell newcell = Create_cell(level, val);
+    for(int i = 0; i < newcell->level; i++){
+        Add_cell_level(mylist, newcell, i);
+    }
+    return;
 }

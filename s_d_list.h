@@ -21,10 +21,11 @@ struct s_d_list {
 typedef struct s_d_list t_list;
 
 t_list Create_list(int);    //Création d'une liste vide
-void Add_Head_list(t_list*, p_cell);    //Ajout d'une cellule en tête de list
+void Add_Head_list(t_list*, int, int);    //Ajout d'une cellule en tête de list
 void Display_list_level(t_list, int);    //Affichage d'un niveau de la liste
-void Display_All_list(t_list, int);    //Affichage de tous les niveaux de la liste
+void Display_All_list(t_list);    //Affichage de tous les niveaux de la liste
 void Display_All_list_aligne(t_list);   //Affichage de tous les niveau de la liste (aligné)
-void Add_cell(t_list*, p_cell);     //Ajout d'une cellule à niveau en respectant l'ordre croissant
+void Add_cell_level(t_list*, p_cell, int); // Ajout d'une cellule par odre croissant sur un niveau donner
+void Add_cell(t_list*, int val, int level);     //Ajout d'une cellule à niveau en respectant l'ordre croissant
 
 #endif //GESTION_AGENDA_S_D_LIST_H
