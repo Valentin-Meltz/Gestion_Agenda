@@ -51,5 +51,10 @@ void Display_All_list(t_list mylist, int level){
         Display_list_level(mylist, level++);
 }
 
-void Display_All_list_aligne(t_list);
-void Add_cell(t_list*, p_cell);
+void Display_All_list_aligne(t_list){
+
+}
+
+void Add_cell(t_list*, p_cell){
+
+}
