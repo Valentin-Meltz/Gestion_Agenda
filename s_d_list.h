@@ -25,6 +25,9 @@ void Add_Head_list(t_list*, int, int);    //Ajout d'une cellule en tête de list
 void Display_list_level(t_list, int);    //Affichage d'un niveau de la liste
 void Display_All_list(t_list);    //Affichage de tous les niveaux de la liste
 void Display_All_list_aligne(t_list);   //Affichage de tous les niveau de la liste (aligné)
+int IsValinList(t_list, int);
+int NbBetweenCell(p_cell, p_cell);
+int NBBetweenHead(t_list, p_cell);
 void Display_level_aligne(t_list, int);
 void Add_cell_level(t_list*, p_cell, int); // Ajout d'une cellule par odre croissant sur un niveau donner
 void Add_cell(t_list*, int val, int level);     //Ajout d'une cellule à niveau en respectant l'ordre croissant
