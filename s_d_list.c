@@ -12,7 +12,6 @@ p_cell Create_cell(int level, int val){
     }
     return cell;
 }
-
 void Display_cell(p_cell cell){
     printf("[ %d|@-]", cell->value);
     return;
@@ -36,84 +35,6 @@ void Add_Head_list(t_list* mylist, int val, int level){
     }
     return;
 }
-
-void Display_list_level(t_list mylist, int level){
-    printf("[list head_%d @-]-->", level);
-    if (mylist.head[level] == NULL){
-        printf("NULL\n");
-        return;
-    }
-
-    p_cell temp = mylist.head[level];
-    while(temp != NULL){
-        Display_cell(temp);
-        printf("-->");
-        temp = temp->next[level];
-    }
-    printf("NULL\n");
-    return;
-}
-
-void Display_All_list(t_list mylist){
-    for(int i = 0; i < mylist.max_level; i++){
-        Display_list_level(mylist, i);
-    }
-    return;
-}
-
-int NBBetweenHead(t_list mylist, p_cell cell){
-    if(mylist.head[0] == cell) return 0;
-    return NbBetweenCell(mylist.head[0], cell) + 1;
-}
-
-int NbBetweenCell(p_cell cell1, p_cell cell2){
-    if(cell1 == cell2) return 0;
-    p_cell temp1 = cell1;
-    int nbCell = 0;
-    while (temp1->next[0] != cell2){
-        nbCell ++;
-        temp1 = temp1->next[0];
-    }
-    return nbCell;
-}
-
-void Display_level_aligne(t_list mylist, int level){
-    printf("[list head_%d @-]", level);
-    int cpt;
-    if (mylist.head[level] == NULL) cpt = NBBetweenHead(mylist, NULL);
-    else {
-        p_cell temp = mylist.head[level];
-        cpt = NBBetweenHead(mylist, mylist.head[level]);
-        for (int i = 0; i < cpt; i++) {
-            printf("-----------");
-        }
-        printf("-->");
-        Display_cell(temp);
-        while (temp->next[level] != NULL) {
-            cpt = NbBetweenCell(temp, temp->next[level]);
-            for (int i = 0; i < cpt; i++) {
-                printf("-----------");
-            }
-            printf("-->");
-            Display_cell(temp->next[level]);
-            temp = temp->next[level];
-        }
-        cpt = NbBetweenCell(temp, NULL);
-    }
-    for (int i = 0; i < cpt; i++) {
-        printf("-----------");
-    }
-    printf("-->NULL\n");
-}
-
-void Display_All_list_aligne(t_list mylist){
-    Display_list_level(mylist, 0);
-    for (int i =1; i < mylist.max_level; i++){
-        Display_level_aligne(mylist, i);
-    }
-    return;
-}
-
 void Add_cell_level(t_list* mylist, p_cell newcell, int level){
     if (mylist->head[level] == NULL){
         mylist->head[level] = newcell;
@@ -137,11 +58,83 @@ void Add_cell_level(t_list* mylist, p_cell newcell, int level){
     prev->next[level] = newcell;
     return;
 }
-
 void Add_cell(t_list* mylist, int val, int level){
     p_cell newcell = Create_cell(level, val);
     for(int i = 0; i < newcell->level; i++){
         Add_cell_level(mylist, newcell, i);
+    }
+    return;
+}
+
+int NbBetweenHead(t_list mylist, p_cell cell){
+    if(mylist.head[0] == cell) return 0;
+    return NbBetweenCell(mylist.head[0], cell) + 1;
+}
+int NbBetweenCell(p_cell cell1, p_cell cell2){
+    if(cell1 == cell2) return 0;
+    p_cell temp1 = cell1;
+    int nbCell = 0;
+    while (temp1->next[0] != cell2){
+        nbCell ++;
+        temp1 = temp1->next[0];
+    }
+    return nbCell;
+}
+
+void Display_list_level(t_list mylist, int level){
+    printf("[list head_%d @-]-->", level);
+    if (mylist.head[level] == NULL){
+        printf("NULL\n");
+        return;
+    }
+
+    p_cell temp = mylist.head[level];
+    while(temp != NULL){
+        Display_cell(temp);
+        printf("-->");
+        temp = temp->next[level];
+    }
+    printf("NULL\n");
+    return;
+}
+void Display_All_list(t_list mylist){
+    for(int i = 0; i < mylist.max_level; i++){
+        Display_list_level(mylist, i);
+    }
+    return;
+}
+void Display_level_aligne(t_list mylist, int level){
+    printf("[list head_%d @-]", level);
+    int cpt;
+    if (mylist.head[level] == NULL) cpt = NbBetweenHead(mylist, NULL);
+    else {
+        p_cell temp = mylist.head[level];
+        cpt = NbBetweenHead(mylist, mylist.head[level]);
+        for (int i = 0; i < cpt; i++) {
+            printf("-----------");
+        }
+        printf("-->");
+        Display_cell(temp);
+        while (temp->next[level] != NULL) {
+            cpt = NbBetweenCell(temp, temp->next[level]);
+            for (int i = 0; i < cpt; i++) {
+                printf("-----------");
+            }
+            printf("-->");
+            Display_cell(temp->next[level]);
+            temp = temp->next[level];
+        }
+        cpt = NbBetweenCell(temp, NULL);
+    }
+    for (int i = 0; i < cpt; i++) {
+        printf("-----------");
+    }
+    printf("-->NULL\n");
+}
+void Display_All_list_aligne(t_list mylist){
+    Display_list_level(mylist, 0);
+    for (int i =1; i < mylist.max_level; i++){
+        Display_level_aligne(mylist, i);
     }
     return;
 }
