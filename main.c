@@ -18,5 +18,6 @@ int main() {
     Display_All_list(mylist);
     printf("\n");
     Display_All_list_aligne(mylist);
+
     return 0;
 }
