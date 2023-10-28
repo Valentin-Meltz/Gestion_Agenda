@@ -6,7 +6,7 @@ int main() {
     t_list mylist = Create_list(10);
 
     Add_cell(&mylist, 29, 5);
-    Add_cell(&mylist, 12, 3);
+    Add_cell(&mylist, 56, 3);
     Add_cell(&mylist, 56, 1);
     Add_cell(&mylist, 40, 3);
     Add_cell(&mylist, 10, 2);

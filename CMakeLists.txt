@@ -3,7 +3,8 @@ project(Gestion_Agenda C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(Gestion_Agenda main.c
+add_executable(Gestion_Agenda
+        main.c
         s_d_list.c
         s_d_list.h
 )

@@ -17,12 +17,14 @@ void Display_cell(p_cell);  //affichage d'une cellule
 struct s_d_list {
     int max_level;
     t_cell **head;      //Liste de tous les pointeurs head de chaque niveau
+    t_cell **tail;      //Liste de tous les pointeurs tail de chaque niveau
 };
 typedef struct s_d_list t_list;
 
 t_list Create_list(int);    //Création d'une liste vide
 
-void Add_Head_list(t_list*, int, int);    //Ajout d'une cellule en tête de list
+void Add_Head_list(t_list*, p_cell, int);    //Ajout d'une cellule en tête de list
+void Add_Tail_List(t_list*, p_cell, int);    //Ajout d'une cellule en queue de list
 void Add_cell(t_list*, int val, int level);     //Ajout d'une cellule à niveau en respectant l'ordre croissant
 
 int isEmptyList(t_list, int);

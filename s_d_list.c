@@ -14,54 +14,22 @@ p_cell Create_cell(int level, int val){
 }
 void Display_cell(p_cell cell){
     printf("[ %d|@-]", cell->value);
-    return;
 }
 
 t_list Create_list(int max_level){
     t_list mylist;
     mylist.max_level = max_level;
     mylist.head = (p_cell *) malloc(mylist.max_level * sizeof(p_cell));
+    mylist.tail = (p_cell *) malloc(mylist.max_level * sizeof(p_cell));
     for (int i = 0; i < mylist.max_level; i++){
         mylist.head[i] = NULL;
+        mylist.tail[i] = NULL;
     }
     return mylist;
 }
-
-void Add_Head_list(t_list* mylist, int val, int level){
-    p_cell newcell = Create_cell(level, val);
-    for(int i = 0; i < newcell->level; i++){
-        newcell->next[i] = mylist->head[i];
-        mylist->head[i] = newcell;
-    }
-    return;
+int isEmptyList(t_list mylist, int level){
+    return mylist.head[level] == NULL && mylist.tail[level] == NULL;
 }
-void Add_cell(t_list* mylist, int val, int level){
-    p_cell newcell = Create_cell(level, val);
-    for(int level = 0; level < newcell->level; level++){
-        if (mylist->head[level] == NULL){
-            mylist->head[level] = newcell;
-        }
-        else if (mylist->head[level]->value > newcell->value){
-            newcell->next[level] = mylist->head[level];
-            mylist->head[level] = newcell;
-        }
-        else {
-            p_cell temp = mylist->head[level], prev = temp;
-            while (temp != NULL) {
-                if (newcell->value > prev->value && newcell->value <= temp->value) {
-                    prev->next[level] = newcell;
-                    newcell->next[level] = temp;
-                    break;
-                }
-                prev = temp;
-                temp = temp->next[level];
-            }
-            prev->next[level] = newcell;
-        }
-    }
-    return;
-}
-
 int NbBetweenHead(t_list mylist, p_cell cell){
     if(mylist.head[0] == cell) return 0;
     return NbBetweenCell(mylist.head[0], cell) + 1;
@@ -75,6 +43,47 @@ int NbBetweenCell(p_cell cell1, p_cell cell2){
         temp1 = temp1->next[0];
     }
     return nbCell;
+}
+
+void Add_Head_list(t_list* mylist, p_cell newcell, int level){
+    if (isEmptyList(*mylist, level)){
+        mylist->head[level] = newcell;
+        mylist->tail[level] = newcell;
+        return;
+    }
+    newcell->next[level] = mylist->head[level];
+    mylist->head[level] = newcell;
+}
+void Add_Tail_List(t_list* mylist, p_cell newcell, int level){
+    if (isEmptyList(*mylist, level)){
+        mylist->head[level] = newcell;
+        mylist->tail[level] = newcell;
+        return;
+    }
+    mylist->tail[level]->next[level] = newcell;
+    mylist->tail[level] = newcell;
+}
+void Add_cell(t_list* mylist, int val, int level){
+    p_cell newcell = Create_cell(level, val);
+    for(level = 0; level < newcell->level; level++){
+        if (isEmptyList(*mylist, level) || mylist->head[level]->value >= newcell->value)
+            Add_Head_list(mylist, newcell, level);
+        else if (mylist->tail[level]->value < newcell->value)
+            Add_Tail_List(mylist, newcell, level);
+        else{
+            p_cell temp = mylist->head[level], prev = temp;
+            while (temp != NULL) {
+                if (newcell->value > prev->value && newcell->value <= temp->value) {
+                    prev->next[level] = newcell;
+                    newcell->next[level] = temp;
+                    break;
+                }
+                prev = temp;
+                temp = temp->next[level];
+            }
+            prev->next[level] = newcell;
+        }
+    }
 }
 
 void Display_list_level(t_list mylist, int level){
@@ -91,13 +100,11 @@ void Display_list_level(t_list mylist, int level){
         temp = temp->next[level];
     }
     printf("NULL\n");
-    return;
 }
 void Display_All_list(t_list mylist){
     for(int i = 0; i < mylist.max_level; i++){
         Display_list_level(mylist, i);
     }
-    return;
 }
 void Display_All_list_aligne(t_list mylist){
     Display_list_level(mylist, 0);
@@ -129,5 +136,4 @@ void Display_All_list_aligne(t_list mylist){
         }
         printf("-->NULL\n");
     }
-    return;
 }
