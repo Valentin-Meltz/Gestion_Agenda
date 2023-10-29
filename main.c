@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "s_d_list.h"
 
 int main() {
@@ -18,6 +19,12 @@ int main() {
     Display_All_list(mylist);
     printf("\n");
     Display_All_list_aligne(mylist);
+    printf("\n");
+
+    t_list mylist_2 = Create_list(3);
+    int* levels = Create_levels(mylist_2);
+    Add_levels(&mylist_2, levels);
+    Display_All_list_aligne(mylist_2);
 
     return 0;
 }

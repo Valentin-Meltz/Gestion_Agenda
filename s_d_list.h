@@ -1,6 +1,7 @@
 #ifndef GESTION_AGENDA_S_D_LIST_H
 #define GESTION_AGENDA_S_D_LIST_H
 
+//Partie 1
 //Structure d'une cellule à level niveau
 struct s_d_cell {
     int value;
@@ -27,14 +28,20 @@ void Add_Head_list(t_list*, p_cell, int);    //Ajout d'une cellule en tête de l
 void Add_Tail_List(t_list*, p_cell, int);    //Ajout d'une cellule en queue de list
 void Add_cell(t_list*, int val, int level);     //Ajout d'une cellule à niveau en respectant l'ordre croissant
 
-int isEmptyList(t_list, int);
-int IsValinList(t_list, int);   //Test si une valeur est situé dans la liste
-int NbCell(t_list, int);
-int NbBetweenCell(p_cell, p_cell);
-int NbBetweenHead(t_list, p_cell);
+int isEmptyList(t_list, int);       //Test si une liste est videe ou non
+int NbBetweenCell(p_cell, p_cell);      //Calcul le nombre de cellule entre deux cellule données
+int NbBetweenHead(t_list, p_cell);      //Calcul le nombre de cellule entre la tête et une cellule donné
 
 void Display_list_level(t_list, int);    //Affichage d'un niveau de la liste
 void Display_All_list(t_list);    //Affichage de tous les niveaux de la liste
 void Display_All_list_aligne(t_list);   //Affichage de tous les niveau de la liste (aligné)
+
+//Fonction d'affichage
+int GetNbChiffre(int);
+void Nprintf(char, int);
+
+//Partie 2
+int* Create_levels(t_list);     //Création du tableau de 2n-1 entier
+void Add_levels(t_list*, int*);     //Ajout des valeurs dans la liste
 
 #endif //GESTION_AGENDA_S_D_LIST_H
