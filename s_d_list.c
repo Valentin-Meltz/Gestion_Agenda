@@ -20,7 +20,7 @@ p_cell Create_cell(int level, int val){
     }
     return cell;
 }
-void Display_cell(p_cell cell) {
+void Display_cell(p_cell cell){
     switch (GetNbChiffre(cell->value)){     //Affichage d'une cellule en fonction du nombre de chiffre de sa valeur
         case 1:
             printf("[  %d|@-]", cell->value);
@@ -33,7 +33,7 @@ void Display_cell(p_cell cell) {
     }
 }
 
-t_list Create_list(int max_level){
+t_list Create_list(int max_level) {
     t_list mylist;      //Création de la cellule
     mylist.max_level = max_level;   //Attribution de la valeur max_level
     mylist.head = (p_cell *) malloc(mylist.max_level * sizeof(p_cell));     //Allocution dynamique d'un tableau de pointeur (**p_cell)
