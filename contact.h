@@ -3,7 +3,7 @@
 
 #include "rendez-vous.h"
 
-char *scanString();
+char *scanString();     //Paul
 
 struct contact {
     char* name;
@@ -14,6 +14,7 @@ struct contact {
 typedef struct contact t_contact, *p_contact;
 
 t_contact Create_contact(char*);     //Paul
+
 void Display_contact(p_contact);    //Tuan
 
 struct list_contact {
@@ -31,8 +32,8 @@ void Add_Tail_Contact(l_contact*, p_contact, int);
 void Add_contact(l_contact*, p_contact);    //Valentin
 
 
-void DisplayL_contact(l_contact);   //Tuan
-void Delete_contact(l_contact*, char*);     //Valentin
+void DisplayAllContact(l_contact);   //Tuan
+void Delete_contact(l_contact*, char*);     //Valentin Peut etre qu'on va pas la faire
 p_contact Search_contact(l_contact);    //Valentin
 void Save_contact();  //Pas fini    //Valentin
 void Load_contact();  //Pas fini ca retournera la liste dans lequels sont stocké les contact    //Valentin

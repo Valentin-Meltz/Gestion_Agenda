@@ -92,7 +92,7 @@ void Add_contact(l_contact* mylist, p_contact newcell) {
         Add_contact(mylist, newcell->next[0]);
     }
 }
-void Delete_contact(l_contact* mylist, char* name){
+void Delete_contact(l_contact* mylist, char* name){     //Je laisse ca la mais on va peut etre pas delete les contatcs
     p_contact temp = mylist->head[0], prev = temp;
     if(strcmp(temp->name, name) == 0){
         mylist->head[0] = temp->next[0];

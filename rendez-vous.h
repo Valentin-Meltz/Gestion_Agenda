@@ -46,7 +46,7 @@ struct list_rdv {
 };
 typedef struct list_rdv l_rdv;
 
-l_rdv CreateL_rdv();    //Valentin
+l_rdv CreateL_rdv();    //Paul
 void DisplayL_rdv(l_rdv);   //Tuan
 void Add_rdv(l_rdv*, p_rdv);    //Valentin
 p_rdv Delete_rdv(l_rdv*, p_date, p_hour);   //Valentin
