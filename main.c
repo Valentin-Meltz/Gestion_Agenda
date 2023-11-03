@@ -25,6 +25,9 @@ int main() {
     int* levels = Create_levels(mylist_2);
     Add_levels(&mylist_2, levels);
     Display_All_list_aligne(mylist_2);
+    printf("\n");
+
+    printf("%d ", strcmp("fran", "toto"));
 
     return 0;
 }

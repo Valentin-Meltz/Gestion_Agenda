@@ -36,7 +36,6 @@ void Display_list_level(t_list, int);    //Affichage d'un niveau de la liste
 void Display_All_list(t_list);    //Affichage de tous les niveaux de la liste
 void Display_All_list_aligne(t_list);   //Affichage de tous les niveau de la liste (aligné)
 
-//Fonction d'affichage
 int GetNbChiffre(int);
 void Nprintf(char, int);
 
