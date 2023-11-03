@@ -21,15 +21,18 @@ p_cell Create_cell(int level, int val){
     return cell;
 }
 void Display_cell(p_cell cell){
-    switch (GetNbChiffre(cell->value)){     //Affichage d'une cellule en fonction du nombre de chiffre de sa valeur
-        case 1:
-            printf("[  %d|@-]", cell->value);
-            break;
-        case 2:
-            printf("[ %d|@-]", cell->value);
-            break;
-        default:
-            printf("[%d|@-]", cell->value);
+    if(cell == NULL) printf("NULL");
+    else {
+        switch (GetNbChiffre(cell->value)) {     //Affichage d'une cellule en fonction du nombre de chiffre de sa valeur
+            case 1:
+                printf("[  %d|@-]", cell->value);
+                break;
+            case 2:
+                printf("[ %d|@-]", cell->value);
+                break;
+            default:
+                printf("[%d|@-]", cell->value);
+        }
     }
 }
 
@@ -106,11 +109,6 @@ void Add_cell(t_list* mylist, int val, int level){
 
 void Display_list_level(t_list mylist, int level){
     printf("[list head_%d @-]-->", level);  //On affiche l'entête de la liste
-    if (mylist.head[level] == NULL){
-        printf("NULL\n");
-        return;
-    }
-
     p_cell temp = mylist.head[level];
     while(temp != NULL){    //On parcours la liste et on affiche chaque cellule
         Display_cell(temp);

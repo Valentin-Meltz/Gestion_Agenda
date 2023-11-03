@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "module timer-20231031/timer.h"
 #include "s_d_list.h"
 
 int main() {
@@ -8,6 +9,7 @@ int main() {
 
     Add_cell(&mylist, 29, 5);
     Add_cell(&mylist, 56, 3);
+    Add_cell(&mylist, 3, 4);
     Add_cell(&mylist, 56, 1);
     Add_cell(&mylist, 40, 3);
     Add_cell(&mylist, 10, 2);
@@ -19,21 +21,24 @@ int main() {
     Display_All_list_aligne(mylist);
     printf("\n");
 
+    FILE *log_file = fopen("log.txt","w");
+    char format[] = "%d\t%s\t%s\n" ;
+    int level = 10;
+    char *time_lvl0;
+    char *time_all_levels;
+
+    startTimer();
+    p_cell Cell = search_classic(mylist, 29);
+    stopTimer();
+    time_lvl0 = getTimeAsString(); // fonction du module timer
+
+    startTimer();
     p_cell cell = search(mylist, mylist.head[mylist.max_level -1], mylist.tail[mylist.max_level -1], 29, mylist.max_level-1);
-    if(cell == NULL) printf("NULL ");
-    else printf("%d ", cell->value);
+    stopTimer();
+    time_all_levels = getTimeAsString(); // fonction du module timer
 
-    p_cell cell2 = search(mylist, mylist.head[mylist.max_level -1], mylist.tail[mylist.max_level -1], 10, mylist.max_level-1);
-    if(cell2 == NULL) printf("NULL ");
-    else printf("%d ", cell2->value);
-
-    p_cell cell3 = search(mylist, mylist.head[mylist.max_level -1], mylist.tail[mylist.max_level -1], 71, mylist.max_level-1);
-    if(cell3 == NULL) printf("NULL ");
-    else printf("%d ", cell3->value);
-
-    p_cell cell4 = search(mylist, mylist.head[mylist.max_level -1], mylist.tail[mylist.max_level -1], 56, mylist.max_level-1);
-    if(cell4 == NULL) printf("NULL ");
-    else printf("%d ", cell4->value);
+    fprintf(log_file,format,level,time_lvl0, time_all_levels);
+    fclose(log_file);
 
     return 0;
 }
