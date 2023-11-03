@@ -156,6 +156,38 @@ void Display_All_list_aligne(t_list mylist){
     }
 }
 
+p_cell search_classic (t_list mylist, int val){
+    p_cell cur = mylist.head[0];
+    while (cur != NULL && cur->value != val){
+        cur = cur->next[0];
+    }
+    return cur;
+}
+
+p_cell search (t_list mylist, p_cell start, p_cell end, int val, int level){
+    if(level == 0) {
+        return search_classic(mylist, val);
+    }
+    if(isEmptyList(mylist, level)) {
+        return search(mylist, mylist.head[level - 1], mylist.tail[level - 1], val, level - 1);
+    }
+    if(start->value == val) return start;
+    if(end->value == val) return end;
+    if(start == end && start->value > val) return search(mylist, mylist.head[level-1], start, val, level-1);
+    if(start == end && start->value < val) return search(mylist, start, mylist.tail[level-1], val, level-1);
+    p_cell cur = start, prev = cur;
+    while (cur != end){
+        if (cur->value == val) return cur;
+        if (cur->value > val){
+            return search(mylist, prev, cur, val, level-1);
+        }
+        prev = cur;
+        cur = cur->next[level];
+    }
+    return search(mylist, prev, end, val, level-1);
+}
+
+
 //Partie 2
 int* Create_levels(t_list mylist){
     int *levels = (int *) calloc(pow(2, mylist.max_level)-1, sizeof(int));

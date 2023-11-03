@@ -16,18 +16,24 @@ int main() {
     Add_cell(&mylist, 29, 8);
     Add_cell(&mylist, 16, 7);
 
-    Display_All_list(mylist);
-    printf("\n");
     Display_All_list_aligne(mylist);
     printf("\n");
 
-    t_list mylist_2 = Create_list(3);
-    int* levels = Create_levels(mylist_2);
-    Add_levels(&mylist_2, levels);
-    Display_All_list_aligne(mylist_2);
-    printf("\n");
+    p_cell cell = search(mylist, mylist.head[mylist.max_level -1], mylist.tail[mylist.max_level -1], 29, mylist.max_level-1);
+    if(cell == NULL) printf("NULL ");
+    else printf("%d ", cell->value);
 
-    printf("%d ", strcmp("fran", "toto"));
+    p_cell cell2 = search(mylist, mylist.head[mylist.max_level -1], mylist.tail[mylist.max_level -1], 10, mylist.max_level-1);
+    if(cell2 == NULL) printf("NULL ");
+    else printf("%d ", cell2->value);
+
+    p_cell cell3 = search(mylist, mylist.head[mylist.max_level -1], mylist.tail[mylist.max_level -1], 71, mylist.max_level-1);
+    if(cell3 == NULL) printf("NULL ");
+    else printf("%d ", cell3->value);
+
+    p_cell cell4 = search(mylist, mylist.head[mylist.max_level -1], mylist.tail[mylist.max_level -1], 56, mylist.max_level-1);
+    if(cell4 == NULL) printf("NULL ");
+    else printf("%d ", cell4->value);
 
     return 0;
 }
