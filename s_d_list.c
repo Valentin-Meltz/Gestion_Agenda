@@ -21,15 +21,18 @@ p_cell Create_cell(int level, int val){
     return cell;
 }
 void Display_cell(p_cell cell){
-    switch (GetNbChiffre(cell->value)){     //Affichage d'une cellule en fonction du nombre de chiffre de sa valeur
-        case 1:
-            printf("[  %d|@-]", cell->value);
-            break;
-        case 2:
-            printf("[ %d|@-]", cell->value);
-            break;
-        default:
-            printf("[%d|@-]", cell->value);
+    if(cell == NULL) printf("NULL");
+    else {
+        switch (GetNbChiffre(cell->value)) {     //Affichage d'une cellule en fonction du nombre de chiffre de sa valeur
+            case 1:
+                printf("[  %d|@-]", cell->value);
+                break;
+            case 2:
+                printf("[ %d|@-]", cell->value);
+                break;
+            default:
+                printf("[%d|@-]", cell->value);
+        }
     }
 }
 
@@ -106,11 +109,6 @@ void Add_cell(t_list* mylist, int val, int level){
 
 void Display_list_level(t_list mylist, int level){
     printf("[list head_%d @-]-->", level);  //On affiche l'entête de la liste
-    if (mylist.head[level] == NULL){
-        printf("NULL\n");
-        return;
-    }
-
     p_cell temp = mylist.head[level];
     while(temp != NULL){    //On parcours la liste et on affiche chaque cellule
         Display_cell(temp);
@@ -155,6 +153,38 @@ void Display_All_list_aligne(t_list mylist){
         printf("-->NULL\n");
     }
 }
+
+p_cell search_classic (t_list mylist, int val){
+    p_cell cur = mylist.head[0];
+    while (cur != NULL && cur->value != val){
+        cur = cur->next[0];
+    }
+    return cur;
+}
+
+p_cell search (t_list mylist, p_cell start, p_cell end, int val, int level){
+    if(level == 0) {
+        return search_classic(mylist, val);
+    }
+    if(isEmptyList(mylist, level)) {
+        return search(mylist, mylist.head[level - 1], mylist.tail[level - 1], val, level - 1);
+    }
+    if(start->value == val) return start;
+    if(end->value == val) return end;
+    if(start == end && start->value > val) return search(mylist, mylist.head[level-1], start, val, level-1);
+    if(start == end && start->value < val) return search(mylist, start, mylist.tail[level-1], val, level-1);
+    p_cell cur = start, prev = cur;
+    while (cur != end){
+        if (cur->value == val) return cur;
+        if (cur->value > val){
+            return search(mylist, prev, cur, val, level-1);
+        }
+        prev = cur;
+        cur = cur->next[level];
+    }
+    return search(mylist, prev, end, val, level-1);
+}
+
 
 //Partie 2
 int* Create_levels(t_list mylist){

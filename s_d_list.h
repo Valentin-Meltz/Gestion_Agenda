@@ -39,6 +39,9 @@ void Display_All_list_aligne(t_list);   //Affichage de tous les niveau de la lis
 int GetNbChiffre(int);
 void Nprintf(char, int);
 
+p_cell search_classic (t_list, int);
+p_cell search (t_list, p_cell, p_cell, int, int);
+
 //Partie 2
 int* Create_levels(t_list);     //Création du tableau de 2n-1 entier
 void Add_levels(t_list*, int*);     //Ajout des valeurs dans la liste
