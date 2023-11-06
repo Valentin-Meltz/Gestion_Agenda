@@ -3,11 +3,11 @@
 
 #include "rendez-vous.h"
 
-char* scanString();     //Paul
+char *scanString();     //Paul
 
 struct contact {
     char* name;
-    l_rdv* rdv;
+    l_rdv * rdv;
     int level;
     struct contact **next;
 };
