@@ -161,7 +161,6 @@ p_cell search_classic (t_list mylist, int val){
     }
     return cur;
 }
-
 p_cell search (t_list mylist, p_cell start, p_cell end, int val, int level){
     if(level == 0) {
         return search_classic(mylist, val);

@@ -4,6 +4,37 @@
 
 #include "contact.h"
 
+char* scanString(){
+    char *S_name = (char*) malloc(50 * sizeof(char)), *F_name = (char*) malloc(50 * sizeof(char));
+    printf("Saisir le nom : ");
+    scanf("%s %s", S_name, F_name);
+
+    if (F_name[0] >= 65 && F_name[0] <= 90)
+    {
+        F_name[0] += 32;
+    }
+    if (S_name[0] >= 65 && S_name[0] <= 90)
+    {
+        S_name[0] += 32;
+    }
+
+    strcat(F_name, "_");
+    strcat(F_name, S_name);
+    return F_name;
+}
+
+t_contact Create_contact() {
+    t_contact mycontact;
+    mycontact.level = 0;
+    mycontact.rdv = NULL;
+    for (int i = 0; i < 4 ; i++)
+    {
+        mycontact.next[i] = NULL;
+    }
+    mycontact.name = scanString();
+    return mycontact;
+}
+
 int isEmptyContact(l_contact mylist, int level){
     return mylist.head[level] == NULL && mylist.tail[level] == NULL;
 }
@@ -92,6 +123,7 @@ void Add_contact(l_contact* mylist, p_contact newcell) {
         Add_contact(mylist, newcell->next[0]);
     }
 }
+
 void Delete_contact(l_contact* mylist, char* name){     //Je laisse ca la mais on va peut etre pas delete les contatcs
     p_contact temp = mylist->head[0], prev = temp;
     if(strcmp(temp->name, name) == 0){

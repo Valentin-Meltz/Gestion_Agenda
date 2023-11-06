@@ -3,17 +3,17 @@
 
 #include "rendez-vous.h"
 
-char *scanString();     //Paul
+char* scanString();     //Paul
 
 struct contact {
     char* name;
-    l_rdv rdv;
+    l_rdv* rdv;
     int level;
     struct contact **next;
 };
 typedef struct contact t_contact, *p_contact;
 
-t_contact Create_contact(char*);     //Paul
+t_contact Create_contact();     //Paul
 
 void Display_contact(p_contact);    //Tuan
 
