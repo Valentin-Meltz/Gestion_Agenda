@@ -134,33 +134,3 @@ void Delete_contact(l_contact* mylist, char* name){     //Je laisse ca la mais o
         Add_contact(mylist, mylist->head[0]);
     }
 }
-
-char *scanString(){
-    char *S_name = (char*) malloc(50 * sizeof(char)), *F_name = (char*) malloc(50 * sizeof(char));
-    printf("Saisir le nom : ");
-    scanf("%s %s", S_name, F_name);
-    if (F_name[0] >= 65 && F_name[0] <= 90)
-    {
-        F_name[0] += 32;
-    }
-    if (S_name[0] >= 65 && S_name[0] <= 90)
-    {
-        S_name[0] += 32;
-    }
-    strcat(F_name, "_");
-    strcat(F_name, S_name);
-    return F_name;
-}
-
-t_contact Create_contact()
-{
-    t_contact mycontact;
-    mycontact.level = 0;
-    mycontact.rdv = NULL;
-    for (int i = 0; i < 4 ; i++)
-    {
-        mycontact.next[i] = NULL;
-    }
-    mycontact.name = scanString();
-    return mycontact;
-}
