@@ -9,7 +9,7 @@ struct Date{
 };
 typedef struct Date t_date, *p_date;
 
-p_date CreateDate();    //Paul
+p_date CreateDate(int, int, int);    //Paul
 void DisplayDate(p_date);   //Tuan
 
 //Structure de l'heure et durée d'un rendez-vous
@@ -19,9 +19,9 @@ struct Hour{
 };
 typedef struct Hour t_hour, *p_hour, t_duration, *p_duration;
 
-p_hour CreateHour();    //Paul
+p_hour CreateHour(int, int);    //Paul
 void DisplayHour(p_hour);   //Tuan
-p_duration CreateDuration();    //Paul
+p_duration CreateDuration(int, int);    //Paul
 void DisplayDuration(p_duration);   //Tuan
 
 //Structure d'un rendez-vous
@@ -30,19 +30,19 @@ struct rendez_vous{
     p_hour hour;
     p_duration duration;
     char* object;
-    struct rendez_vous **next;
+    struct rendez_vous *next;
 };
 typedef struct rendez_vous t_rdv, *p_rdv;
 
-p_rdv Create_rdv(t_date, t_hour, t_duration, char*);    //Paul
+p_rdv Create_rdv(p_date, p_hour, p_duration, char*);    //Paul
 char* CreateObject();   //Paul
-void Display_rdv(t_rdv);    //Tuan
+void Display_rdv(p_rdv);    //Tuan
 void Edit_rdv(p_rdv);   //Paul
 
 //Structure d'une liste de rendez-vous
 struct list_rdv {
-    t_rdv **head;
-    t_rdv **tail;
+    t_rdv *head;
+    t_rdv *tail;
 };
 typedef struct list_rdv l_rdv;
 
@@ -51,7 +51,5 @@ void DisplayL_rdv(l_rdv);   //Tuan
 void Add_rdv(l_rdv*, p_rdv);    //Valentin
 p_rdv Delete_rdv(l_rdv*, p_date, p_hour);   //Valentin
 p_rdv Search_rdv(l_rdv, p_date, p_hour);    //Valentin
-void Save_rdv();  //Pas fini (surement le txt en paramètre => chek le fonctionnement des txt en C)  //Valentin
-void Load_rdv();  //Pas fini ca retournera la liste dans lequels sont stocké les rdv (surement le txt en paramètre => chek le fonctionnement des txt en C)  //Valentin
 
 #endif //GESTION_AGENDA_RENDEZ_VOUS_H

@@ -23,15 +23,15 @@ char* scanString(){
     return F_name;
 }
 
-t_contact Create_contact() {
-    t_contact mycontact;
-    mycontact.level = 0;
-    mycontact.rdv = NULL;
+p_contact Create_contact(char* name){
+    p_contact mycontact = (p_contact) malloc(sizeof(t_contact));
+    mycontact->level = 0;
+    mycontact->rdv = NULL;
     for (int i = 0; i < 4 ; i++)
     {
-        mycontact.next[i] = NULL;
+        mycontact->next[i] = NULL;
     }
-    mycontact.name = scanString();
+    strcpy(mycontact->name, name);
     return mycontact;
 }
 
@@ -133,4 +133,28 @@ void Delete_contact(l_contact* mylist, char* name){     //Je laisse ca la mais o
         mylist->head[3] = temp->next[3];
         Add_contact(mylist, mylist->head[0]);
     }
+}
+
+void Save_contact(l_contact mylist){
+    char formatName[]  = "%s\n", formatRdv[] = "%d/%d/%d %d,%d %d,%d %s\t";
+    FILE *stock_contact = fopen("Stock_contact.txt","w");
+
+    p_contact temp = mylist.head[0];
+    while (temp != NULL){
+        fprintf(stock_contact, formatName, temp->name);
+
+        p_rdv cur = temp->rdv->head;
+        while (cur != NULL){
+            fprintf(stock_contact, formatRdv, cur->date->day, cur->date->month, cur->date->year, cur->hour->hour, cur->hour->minute, cur->duration->hour, cur->duration->minute, cur->object);
+            cur = cur->next;
+        }
+        fprintf(stock_contact, "\n");
+
+        temp = temp->next[0];
+    }
+
+    fclose(stock_contact);
+}
+void Load_contact(l_contact mylist){
+
 }
