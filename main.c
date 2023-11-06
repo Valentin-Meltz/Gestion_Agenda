@@ -6,7 +6,6 @@
 
 int main() {
     FILE *log_file = fopen("log.txt","w");
-    char format[] = "%d\t%s\t%s\n" ;
     int level = 7;
     char *time_lvl0;
     char *time_all_levels;
@@ -25,7 +24,7 @@ int main() {
     stopTimer();
     time_all_levels = getTimeAsString(); // fonction du module timer
 
-    fprintf(log_file,format,level,time_lvl0, time_all_levels);
+    fprintf(log_file,"%d\t%s\t%s\n",level,time_lvl0, time_all_levels);
     fclose(log_file);
 
     return 0;
