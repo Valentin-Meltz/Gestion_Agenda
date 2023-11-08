@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "contact.h"
+#include "rendez-vous.h"
 
 char* scanString(){
     char *S_name = (char*) malloc(50 * sizeof(char)), *F_name = (char*) malloc(50 * sizeof(char));
@@ -138,23 +139,35 @@ void Delete_contact(l_contact* mylist, char* name){     //Je laisse ca la mais o
 void Save_contact(l_contact mylist){
     char formatName[]  = "%s\n", formatRdv[] = "%d/%d/%d %d,%d %d,%d %s\t";
     FILE *stock_contact = fopen("Stock_contact.txt","w");
+    FILE *stock_rdv = fopen("Stock_rdv.txt","w");
 
     p_contact temp = mylist.head[0];
     while (temp != NULL){
         fprintf(stock_contact, formatName, temp->name);
-
         p_rdv cur = temp->rdv->head;
         while (cur != NULL){
-            fprintf(stock_contact, formatRdv, cur->date->day, cur->date->month, cur->date->year, cur->hour->hour, cur->hour->minute, cur->duration->hour, cur->duration->minute, cur->object);
+            fprintf(stock_rdv, formatRdv, cur->date->day, cur->date->month, cur->date->year, cur->hour->hour, cur->hour->minute, cur->duration->hour, cur->duration->minute, cur->object);
             cur = cur->next;
         }
-        fprintf(stock_contact, "\n");
-
+        fprintf(stock_rdv, "\n");
         temp = temp->next[0];
     }
 
+    fclose(stock_rdv);
     fclose(stock_contact);
 }
-void Load_contact(l_contact mylist){
+/*
+void Load_contact(l_contact* mylist){
+    char formatName[]  = "%s\n";
+    char *name;
+    FILE *stock_contact = fopen("Stock_contact.txt","r");
+    FILE *stock_rdv = fopen("Stock_rdv.txt","r");
 
+    while(fgets(name, stock_contact) != NULL){
+
+    }
+    do{
+        fscanf(stock_contact, formatName, &name);
+    } while(fscanf(stock_contact, formatName, &name) != NULL);
 }
+*/

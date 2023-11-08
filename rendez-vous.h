@@ -9,8 +9,8 @@ struct Date{
 };
 typedef struct Date t_date, *p_date;
 
-p_date CreateDate(int, int, int);    //Paul
-void DisplayDate(p_date);   //Tuan
+p_date CreateDate(int, int, int);
+void DisplayDate(p_date);
 
 //Structure de l'heure et durée d'un rendez-vous
 struct Hour{
@@ -19,10 +19,10 @@ struct Hour{
 };
 typedef struct Hour t_hour, *p_hour, t_duration, *p_duration;
 
-p_hour CreateHour(int, int);    //Paul
-void DisplayHour(p_hour);   //Tuan
-p_duration CreateDuration(int, int);    //Paul
-void DisplayDuration(p_duration);   //Tuan
+p_hour CreateHour(int, int);
+void DisplayHour(p_hour);
+p_duration CreateDuration(int, int);
+void DisplayDuration(p_duration);
 
 //Structure d'un rendez-vous
 struct rendez_vous{
@@ -34,9 +34,9 @@ struct rendez_vous{
 };
 typedef struct rendez_vous t_rdv, *p_rdv;
 
-p_rdv Create_rdv(p_date, p_hour, p_duration, char*);    //Paul
-char* CreateObject();   //Paul
-void Display_rdv(p_rdv);    //Tuan
+p_rdv Create_rdv(p_date, p_hour, p_duration, char*);
+char* CreateObject();
+void Display_rdv(p_rdv);
 void Edit_rdv(p_rdv);   //Paul
 
 //Structure d'une liste de rendez-vous
@@ -46,7 +46,7 @@ struct list_rdv {
 };
 typedef struct list_rdv l_rdv;
 
-l_rdv CreateL_rdv();    //Paul
+l_rdv CreateL_rdv();
 void DisplayL_rdv(l_rdv);   //Tuan
 void Add_rdv(l_rdv*, p_rdv);    //Valentin
 p_rdv Delete_rdv(l_rdv*, p_date, p_hour);   //Valentin
