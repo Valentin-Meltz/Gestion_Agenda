@@ -12,4 +12,6 @@ add_executable(Gestion_Agenda
         rendez-vous.c
         rendez-vous.h
         "module timer-20231031/timer.c"
+        User.c
+        User.h
 )
