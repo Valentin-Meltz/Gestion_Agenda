@@ -4,6 +4,7 @@
 
 #include "rendez-vous.h"
 
+// Fonction relativent à la date
 p_date CreateDate(int day, int mounth, int year){
     p_date date = (p_date) malloc(sizeof(t_date));
     date->day = day;
@@ -13,10 +14,10 @@ p_date CreateDate(int day, int mounth, int year){
 }
 int CompareDate(p_date date1, p_date date2){
     if(date1->year == date2->year){
-        if(date1->month == date2->month) {
+        if(date1->month == date2->month){
             if (date1->day == date2->day)
                 return 2;
-            return date1->day < date2->year;
+            return date1->day < date2->day;
         }
         return date1->month < date2->month;
     }
@@ -25,7 +26,18 @@ int CompareDate(p_date date1, p_date date2){
 void DisplayDate(p_date date){
     printf("%d/%d/%d", date->day, date->month, date->year);
 }
+p_date Load_date(char* date){
+    char *token, **token_rdv = (char **) malloc(3 * sizeof(char *));
+    token = strtok(date, "/");
+    int i = 0;
+    do{
+        token_rdv[i++] = token;
+        token = strtok(NULL, " ");
+    } while(token != NULL);
+    return CreateDate(atoi(token_rdv[0]), atoi(token_rdv[1]), atoi(token_rdv[2]));
+}
 
+// Fonction relativent à l'heure
 p_hour CreateHour(int hour, int min){
     p_hour h = (p_hour) malloc(sizeof(t_hour));
     h->hour = hour;
@@ -40,7 +52,18 @@ int CompareHour(p_hour h1, p_hour h2){
 void DisplayHour(p_hour h){
     printf("%dh%d", h->hour, h->minute);
 }
+p_hour Load_hour(char* hour){
+    char *token, **token_rdv = (char **) malloc(2 * sizeof(char *));
+    token = strtok(hour, ",");
+    int i = 0;
+    do{
+        token_rdv[i++] = token;
+        token = strtok(NULL, " ");
+    } while(token != NULL);
+    return CreateHour(atoi(token_rdv[0]), atoi(token_rdv[1]));
+}
 
+// Fonction relativent à la durée
 p_duration CreateDuration(int hour, int min){
     p_hour d = (p_duration ) malloc(sizeof(t_duration ));
     d->hour = hour;
@@ -51,9 +74,20 @@ void DisplayDuration(p_duration d){
     if(d->hour != 0)
         printf("%dh%d", d->hour, d->minute);
     else
-        printf("%d min", d->minute);
+        printf("%dmin", d->minute);
+}
+p_duration Load_duration(char* d){
+    char *token, **token_rdv = (char **) malloc(2 * sizeof(char *));
+    token = strtok(d, ",");
+    int i = 0;
+    do{
+        token_rdv[i++] = token;
+        token = strtok(NULL, " ");
+    } while(token != NULL);
+    return CreateDuration(atoi(token_rdv[0]), atoi(token_rdv[1]));
 }
 
+// Fonction relativent au rdv
 char* CreateObject(){
     char *object = (char*) malloc(1000 * sizeof(char));
     printf("Quel est l'objet de ce rendez-vous ? ");
@@ -65,7 +99,7 @@ p_rdv Create_rdv(p_date date, p_hour h, p_duration d, char* object){
     rdv->date = date;
     rdv->hour = h;
     rdv->duration = d;
-    strcpy(rdv->object, object);
+    rdv->object = object;
     rdv->next = NULL;
     return rdv;
 }
@@ -79,48 +113,52 @@ void Display_rdv(p_rdv rdv){
     DisplayDate(rdv->date);
     printf(" ");
     DisplayHour(rdv->hour);
-    printf("\n\t%s\n\t", rdv->object);
+    printf(" : %s\n\t", rdv->object);
     DisplayDuration(rdv->duration);
+    printf("\n");
 }
 
+// Fonction relativent à la liste de rdv
 l_rdv CreateL_rdv(){
     l_rdv mylist;
     mylist.head = NULL;
     mylist.tail = NULL;
     return mylist;
 }
-void DisplayL_rdv(l_rdv mylist){
-    p_rdv cur = mylist.head;
-    while(cur != NULL){
-        Display_rdv(cur);
-        printf("\n");
-        cur = cur->next;
-    }
+int isEmptyRdv(l_rdv myRdvList){
+    return myRdvList.head == NULL && myRdvList.tail == NULL;
 }
-void Add_Head_list(l_rdv* mylist, p_rdv rdv){
-    if(mylist->head == NULL && mylist->tail == NULL){
+void Add_Head_rdv(l_rdv* mylist, p_rdv rdv){
+    if(isEmptyRdv(*mylist)){
         mylist->head = rdv;
         mylist->tail = rdv;
-        return;
+    } else {
+        rdv->next = mylist->head;
+        mylist->head = rdv;
     }
-    rdv->next = mylist->head;
-    mylist->head = rdv;
 }
-void Add_Tail_List(l_rdv* mylist, p_rdv rdv){
-    if(mylist->head == NULL && mylist->tail == NULL){
+void Add_Tail_rdv(l_rdv* mylist, p_rdv rdv){
+    if(isEmptyRdv(*mylist)){
         mylist->head = rdv;
         mylist->tail = rdv;
-        return;
+    } else{
+        mylist->tail->next = rdv;
+        mylist->tail = rdv;
     }
-    mylist->tail->next = rdv;
-    mylist->tail = rdv;
 }
 void Add_rdv(l_rdv* mylist, p_rdv rdv){
-    if(CompareRdv(rdv, mylist->head) || CompareRdv(rdv, mylist->head) == 2 || mylist->head == NULL && mylist->tail == NULL){
-        Add_Head_contact(mylist, rdv);
-    } else if(CompareRdv(mylist->tail, rdv)){
-        Add_Tail_contact(mylist, rdv);
-    } else {
+    // Si on ajoute par la tête
+    if(isEmptyRdv(*mylist) || CompareRdv(rdv, mylist->head) || CompareRdv(rdv, mylist->head) == 2 ){
+        Add_Head_rdv(mylist, rdv);
+    }
+
+    // Si on ajoute par la queue
+    else if(CompareRdv(mylist->tail, rdv)){
+        Add_Tail_rdv(mylist, rdv);
+    }
+
+    // Si on ajoute au millieu
+    else {
         p_rdv temp = mylist->head, prev =temp;
         while (temp != NULL){
             if (CompareRdv(prev, rdv) && (CompareRdv(rdv, temp) || CompareRdv(rdv, temp) == 2)){
@@ -154,6 +192,14 @@ void Delete_rdv(l_rdv* mylist, p_date date, p_hour h){
         free(temp->duration);
         free(temp);
     }
+}   //
+void DisplayL_rdv(l_rdv mylist){
+    p_rdv cur = mylist.head;
+    while(cur != NULL){
+        Display_rdv(cur);
+        printf("\n");
+        cur = cur->next;
+    }
 }
 p_rdv Search_rdv(l_rdv mylist, p_date date, p_hour h){
     if(mylist.head->date == date && mylist.head->hour == h) return mylist.head;
@@ -164,4 +210,17 @@ p_rdv Search_rdv(l_rdv mylist, p_date date, p_hour h){
         temp = temp->next;
     }
     return NULL;
-}
+}   //
+p_rdv Load_rdv(char* rdv){
+    char *token, **token_rdv = (char **) malloc(4 * sizeof(char *));
+    token = strtok(rdv, " ");
+    int i = 0;
+    do{
+        token_rdv[i++] = token;
+        token = strtok(NULL, " ");
+    } while(token != NULL);
+    p_date date = Load_date(token_rdv[0]);
+    p_hour h = Load_hour(token_rdv[1]);
+    p_duration d = Load_duration(token_rdv[2]);
+    return Create_rdv(date, h, d, token_rdv[3]);
+}   //

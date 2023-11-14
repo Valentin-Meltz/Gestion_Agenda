@@ -3,7 +3,7 @@
 
 #include "rendez-vous.h"
 
-char *scanString();     //Paul
+char *scanString();
 
 struct contact {
     char* name;
@@ -13,8 +13,8 @@ struct contact {
 };
 typedef struct contact t_contact, *p_contact;
 
-p_contact Create_contact(char*);     //Paul
-void Display_contact(p_contact);    //Tuan
+p_contact Create_contact(char*);
+void Display_contact(p_contact);
 
 struct list_contact {
     int max_level;
@@ -23,18 +23,21 @@ struct list_contact {
 };
 typedef struct list_contact l_contact;
 
-l_contact CreateL_contact();    //Paul
-int isEmptyContact(l_contact, int);
-int IsAddLevel(l_contact , p_contact, int);
-void Add_Head_Contact(l_contact*, p_contact, int);
-void Add_Tail_Contact(l_contact*, p_contact, int);
-void Add_contact(l_contact*, p_contact);    //Valentin
+l_contact CreateL_contact();
+
+void Add_Head_Contact(l_contact*, p_contact, int);  //Ajout d'un contact par la tête
+void Add_Tail_Contact(l_contact*, p_contact, int);  //Ajout d'un contact par la queue
+void Add_contact(l_contact*, p_contact);    //Ajout d'un contact
+void Maj_contact(l_contact*, p_contact);    //Mise à jour du niveau d'un contact
+
+int isEmptyContact(l_contact, int);     //Détermine si la liste est vide ou non
+int calculContactLevel(l_contact, p_contact);   //Calcul le nievau auxquel doit être ajouté un contact
+void deleteContactLevel(l_contact*, p_contact);     //Supprime un contact
 
 
-void DisplayAllContact(l_contact);   //Tuan
-void Delete_contact(l_contact*, char*);     //Valentin Peut etre qu'on va pas la faire
-p_contact Search_contact(l_contact);    //Valentin
-void Save_contact(l_contact);    //Valentin
-void Load_contact(l_contact*);    //Valentin
-
+void DisplayAllContact(l_contact);
+void Delete_contact(l_contact*, char*);     //Peut etre qu'on va pas la faire
+p_contact Search_contact(l_contact);
+void Save_contact(l_contact);
+void Load_contact(l_contact*);
 #endif //GESTION_AGENDA_CONTACT_H
