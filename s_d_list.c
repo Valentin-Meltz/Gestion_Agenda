@@ -1,12 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "s_d_list.h"
 
-//Fonction d'affichage
-int GetNbChiffre(int n){
-    if(n <= 0) return 0;
-    return 1 + GetNbChiffre(n/10);
+#include "s_d_list.h"
+#include "module timer-20231031/timer.h"
+
+static int cptRecherche = 0;
+void display_cptRecherche(){
+    printf("Compteur de recherche : %d\n", cptRecherche);
+    cptRecherche = 0;
 }
 
 //Partie 1
@@ -23,16 +25,14 @@ p_cell Create_cell(int level, int val){
 void Display_cell(p_cell cell){
     if(cell == NULL) printf("NULL");
     else {
-        switch (GetNbChiffre(cell->value)) {     //Affichage d'une cellule en fonction du nombre de chiffre de sa valeur
-            case 1:
-                printf("[  %d|@-]", cell->value);
-                break;
-            case 2:
-                printf("[ %d|@-]", cell->value);
-                break;
-            default:
-                printf("[%d|@-]", cell->value);
-        }
+        if(cell->value >= 1000)
+            printf("[%d|@-]", cell->value);
+        else if(cell->value >= 100)
+            printf("[ %d|@-]", cell->value);
+        else if(cell->value >= 10)
+            printf("[  %d|@-]", cell->value);
+        else
+            printf("[   %d|@-]", cell->value);
     }
 }
 
@@ -132,14 +132,14 @@ void Display_All_list_aligne(t_list mylist){
             p_cell temp = mylist.head[level];
             cpt = NbBetweenHead(mylist, mylist.head[level]);    //On calcule le nombre de cellule entre la tête et la première cellule du niveau dans la liste de niveau 0
             for (int i = 0; i < cpt; i++) {
-                printf("-----------");
+                printf("------------");
             }
             printf("-->");
             Display_cell(temp);
             while (temp->next[level] != NULL) {
                 cpt = NbBetweenCell(temp, temp->next[level]);   //On calcule le nombre de cellule entre la temp et et son succésseur dans la liste de niveau 0
                 for (int i = 0; i < cpt; i++) {
-                    printf("-----------");
+                    printf("------------");
                 }
                 printf("-->");
                 Display_cell(temp->next[level]);
@@ -148,55 +148,109 @@ void Display_All_list_aligne(t_list mylist){
             cpt = NbBetweenCell(temp, NULL);    //On calcule le nombre de cellule entre la queur et NULL dans la liste de niveau 0
         }
         for (int i = 0; i < cpt; i++) {
-            printf("-----------");
+            printf("------------");
         }
         printf("-->NULL\n");
     }
 }
 
-p_cell search_classic (t_list mylist, int val){
-    p_cell cur = mylist.head[0];
-    while (cur != NULL && cur->value != val){
-        cur = cur->next[0];
-    }
-    return cur;
-}
-p_cell search (t_list mylist, p_cell start, p_cell end, int val, int level){
-    if(level == 0) {
-        return search_classic(mylist, val);
-    }
-    if(isEmptyList(mylist, level)) {
-        return search(mylist, mylist.head[level - 1], mylist.tail[level - 1], val, level - 1);
-    }
-    if(start->value == val) return start;
-    if(end->value == val) return end;
-    if(start == end && start->value > val) return search(mylist, mylist.head[level-1], start, val, level-1);
-    if(start == end && start->value < val) return search(mylist, start, mylist.tail[level-1], val, level-1);
-    p_cell cur = start, prev = cur;
-    while (cur != end){
-        if (cur->value == val) return cur;
-        if (cur->value > val){
-            return search(mylist, prev, cur, val, level-1);
-        }
-        prev = cur;
-        cur = cur->next[level];
-    }
-    return search(mylist, prev, end, val, level-1);
-}
-
 
 //Partie 2
 int* Create_levels(t_list mylist){
-    int *levels = (int *) calloc(pow(2, mylist.max_level)-1, sizeof(int));
+    int *levels = (int *) calloc((int)(pow(2, mylist.max_level)-1), sizeof(int));
     for(int i = 0; i < mylist.max_level; i++){
-        for(int j = pow(2, i)-1; j < pow(2, mylist.max_level)-1; j += pow(2, i)){
+        for(int j = (int)(pow(2, i)-1); j < (int)(pow(2, mylist.max_level)-1); j += (int)(pow(2, i))){
             levels[j]++ ;
         }
     }
     return levels;
 }
 void Add_levels(t_list* mylist, int *levels){
-    for(int i = 0; i < pow(2, mylist->max_level)-1; i++){
+    for(int i = 0; i < (int)(pow(2, mylist->max_level)-1); i++){
         Add_cell(mylist, i+1, levels[i]);
     }
+}
+
+p_cell search_classic (t_list mylist, int val){     //Mettre compteur de recherche
+    p_cell cur = mylist.head[0];
+    while (cur != NULL && cur->value != val){
+        cptRecherche++;
+        cur = cur->next[0];
+    }
+    return cur;
+}
+p_cell search (t_list myList, int val){
+    int level = myList.max_level - 1;
+    while(isEmptyList(myList, level)){
+        level --;
+    }
+
+    p_cell startCell = myList.head[level], endCell = myList.tail[level];
+    while(level != -1) {
+        // Si start est la bonne cell
+        if(startCell->value == val) return startCell;
+        cptRecherche ++;
+
+        // Si end est la bonne cell
+        if(endCell->value == val) return endCell;
+        cptRecherche ++;
+
+        // On recherche au millieu
+        // Si start est supérieur à val
+        if(startCell->value > val) startCell = myList.head[level - 1];
+
+            // Si Start est inférieur à val
+        else if (endCell->value < val) endCell = myList.tail[level -1];
+
+            // Si val est entre les bornes
+        else {
+            p_cell cur = startCell, prev = cur;
+            while (cur->value <= val) {
+                // Si on trouve la valeur
+                if (cur->value == val) return cur;
+
+                cptRecherche ++;
+                prev = cur;
+                cur = cur->next[level];
+            }
+            // On change les bornes
+            startCell = prev;
+            endCell = cur;
+        }
+        level --; // On décrémente le niveau
+    }
+    return NULL;
+}
+
+void createTxtComplexite(){
+    FILE *log_file = fopen("log.txt","w");
+    char format[] = "%d %d\t%s |%d|\t%s |%d|\n", *time_lvl0, *time_all_levels;
+    int cptlvl0, cpt_all_levels, val;
+    p_cell searchCell;
+
+    for(int i = 7; i < 15; i++) {
+        t_list mylist = Create_list(i);
+        int *levels = Create_levels(mylist);
+        Add_levels(&mylist, levels);
+
+        val = rand() % mylist.tail[0]->value;   //vérifier la fonction rand jusqu'ou est si cela renvoie bien des entier
+
+        startTimer();
+        searchCell = search_classic(mylist, val);
+        stopTimer();
+        time_lvl0 = getTimeAsString(); // fonction du module timer
+        cptlvl0 = cptRecherche;
+        cptRecherche = 0;
+
+        startTimer();
+        searchCell = search(mylist, val);
+        stopTimer();
+        time_all_levels = getTimeAsString();
+        cpt_all_levels = cptRecherche;
+        cptRecherche = 0;
+
+        fprintf(log_file, format, val, mylist.max_level, time_lvl0, cptlvl0, time_all_levels, cpt_all_levels);
+    }
+
+    fclose(log_file);
 }
