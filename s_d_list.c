@@ -186,18 +186,17 @@ p_cell search (t_list mylist, p_cell start, p_cell end, int val, int level){
 
 
 //Partie 2
-int* Create_levels(t_list mylist) {
-    int *levels = (int *)calloc((size_t)(pow(2, mylist.max_level) - 1), sizeof(int));
-    for (int i = 0; i < mylist.max_level; i++) {
-        for (int j = (int)(pow(2, i) - 1); j < (int)(pow(2, mylist.max_level) - 1); j += (int)pow(2, i)) {
-            levels[j]++;
+int* Create_levels(t_list mylist){
+    int *levels = (int *) calloc(pow(2, mylist.max_level)-1, sizeof(int));
+    for(int i = 0; i < mylist.max_level; i++){
+        for(int j = pow(2, i)-1; j < pow(2, mylist.max_level)-1; j += pow(2, i)){
+            levels[j]++ ;
         }
     }
     return levels;
 }
-
 void Add_levels(t_list* mylist, int *levels){
-    for(int i = 0; i < (int)(pow(2, mylist->max_level)-1); i++){
+    for(int i = 0; i < pow(2, mylist->max_level)-1; i++){
         Add_cell(mylist, i+1, levels[i]);
     }
 }

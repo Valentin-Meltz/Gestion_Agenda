@@ -58,9 +58,9 @@ int isEmptyRdv(l_rdv);
 void Add_Head_rdv(l_rdv*, p_rdv);
 void Add_Tail_rdv(l_rdv*, p_rdv);
 void Add_rdv(l_rdv*, p_rdv);    //Valentin
-void Delete_rdv(l_rdv*, p_date, p_hour);   //
+void Delete_rdv(l_rdv*, p_date, p_hour);
 void DisplayL_rdv(l_rdv);
-p_rdv Search_rdv(l_rdv, p_date, p_hour);    //
-p_rdv Load_rdv(char*);  //
+p_rdv Search_rdv(l_rdv, p_date, p_hour);
+p_rdv Load_rdv(char*);
 
 #endif //GESTION_AGENDA_RENDEZ_VOUS_H

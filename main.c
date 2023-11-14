@@ -7,7 +7,6 @@
 #include "rendez-vous.h"
 
 int main() {
-    /*
     FILE *log_file = fopen("log.txt","w");
     int level = 7;
     const char *time_lvl0;
@@ -17,6 +16,7 @@ int main() {
     int *levels = Create_levels(mylist);
     Add_levels(&mylist, levels);
 
+    /*
     Add_cell(&mylist, 5, 6);
     Add_cell(&mylist, 7, 1);
     Add_cell(&mylist, 18, 6);
@@ -25,7 +25,7 @@ int main() {
     Add_cell(&mylist, 32, 5);
     Add_cell(&mylist, 64, 3);
     Add_cell(&mylist, 56, 3);
-
+    */
     Display_All_list_aligne(mylist);
 
     int val = 32;
@@ -45,18 +45,34 @@ int main() {
     }
 
     fclose(log_file);
+
+
+    /*
+    l_rdv myRdvList = CreateL_rdv();
+
+    p_rdv rdv = Create_rdv(CreateDate(15,5,23), CreateHour(15, 30), CreateDuration(0, 30), "réunion");
+    Add_rdv(&myRdvList, rdv);
+
+    rdv = Create_rdv(CreateDate(6,3,23), CreateHour(20, 00), CreateDuration(0, 30), "réunion");
+    Add_rdv(&myRdvList, rdv);
+
+    rdv = Create_rdv(CreateDate(15,5,24), CreateHour(9, 30), CreateDuration(0, 30), "réunion");
+    Add_rdv(&myRdvList, rdv);
+
+    rdv = Create_rdv(CreateDate(6,3,23), CreateHour(15, 30), CreateDuration(0, 30), "réunion");
+    Add_rdv(&myRdvList, rdv);
+
+    rdv = Create_rdv(CreateDate(10,7,23), CreateHour(10, 20), CreateDuration(0, 30), "réunion");
+    Add_rdv(&myRdvList, rdv);
+
+    rdv = Create_rdv(CreateDate(22,5,23), CreateHour(15, 00), CreateDuration(0, 30), "réunion");
+    Add_rdv(&myRdvList, rdv);
+
+    rdv = Create_rdv(CreateDate(22,5,23), CreateHour(15, 30), CreateDuration(0, 30), "réunion");
+    Add_rdv(&myRdvList, rdv);
+
+    DisplayL_rdv(myRdvList);$
     */
-
-
-    FILE *test_file = fopen("test.txt","w");
-    char format[] = "%d/%d/%d %d,%d %d,%d %s\t";
-
-    int day = 0, mounth = 0, year = 0, hour = 0, min = 0, dur_h = 0, dur_m = 0;
-    char *object = (char*) malloc(1000 * sizeof(char));
-    fscanf(test_file, format, &day, &mounth, &year, &hour, &min, &dur_h, &dur_m, &object);
-    printf("%d/%d/%d %d,%d %d,%d %s\t", day, mounth, year, hour, min, dur_h, dur_m, object);
-
-    fclose(test_file);
 
     return 0;
 }

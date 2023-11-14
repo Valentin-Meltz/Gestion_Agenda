@@ -1,7 +1,0 @@
-#ifndef GESTION_AGENDA_USER_H
-#define GESTION_AGENDA_USER_H
-
-
-int Menu();
-
-#endif //GESTION_AGENDA_USER_H
