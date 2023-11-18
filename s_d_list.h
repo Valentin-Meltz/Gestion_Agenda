@@ -1,8 +1,6 @@
 #ifndef GESTION_AGENDA_S_D_LIST_H
 #define GESTION_AGENDA_S_D_LIST_H
 
-void display_cptRecherche();
-
 //Partie 1
 //Structure d'une cellule à level niveau
 struct s_d_cell {

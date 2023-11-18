@@ -7,19 +7,7 @@
 #include "rendez-vous.h"
 
 int main() {
-    int level = 10;
-
-    t_list mylist = Create_list(level);
-    int *levels = Create_levels(mylist);
-    Add_levels(&mylist, levels);
-
-    Display_All_list_aligne(mylist);
-
-    int val = 324;
-    p_cell serachCell = search(mylist, val);
-
-    printf("La valeur trouvé est : %d\n", serachCell->value);
-    display_cptRecherche();
+    createTxtComplexite();
 
     return 0;
 }

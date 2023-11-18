@@ -6,10 +6,6 @@
 #include "module timer-20231031/timer.h"
 
 static int cptRecherche = 0;
-void display_cptRecherche(){
-    printf("Compteur de recherche : %d\n", cptRecherche);
-    cptRecherche = 0;
-}
 
 //Partie 1
 p_cell Create_cell(int level, int val){
@@ -224,7 +220,7 @@ p_cell search (t_list myList, int val){
 
 void createTxtComplexite(){
     FILE *log_file = fopen("log.txt","w");
-    char format[] = "%d %d\t%s |%d|\t%s |%d|\n", *time_lvl0, *time_all_levels;
+    char format[] = "%d\t%d\t%s |%d|\t%s |%d|\n", *time_lvl0, *time_all_levels;
     int cptlvl0, cpt_all_levels, val;
     p_cell searchCell;
 
@@ -233,7 +229,7 @@ void createTxtComplexite(){
         int *levels = Create_levels(mylist);
         Add_levels(&mylist, levels);
 
-        val = rand() % mylist.tail[0]->value;   //vérifier la fonction rand jusqu'ou est si cela renvoie bien des entier
+        val = (rand() % (mylist.tail[0]->value - 0 + 1)) + 0;   //vérifier la fonction rand jusqu'ou est si cela renvoie bien des entier
 
         startTimer();
         searchCell = search_classic(mylist, val);
