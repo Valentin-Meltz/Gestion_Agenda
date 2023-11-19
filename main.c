@@ -20,13 +20,24 @@ void main_rdv(p_contact contact){
         } while (choix != 'A' && choix != 'B' && choix != 'C');
 
         switch (choix) {
-            //On affiche les rendez-vous
             case 'A': {
-                DisplayL_rdv(contact->rdv);
+                //Si la liste est vide
+                if(isEmptyRdv(contact->rdv))
+                    printf("Vous n'avez pas de rendez vous avec ce contact.\n");
+
+                //Si la liste n'est pas vide
+                else DisplayL_rdv(contact->rdv);
+
+                int val1;
+                printf("Entrer 0 pour revenir en arrière.\n");
+                do {
+                    printf("$ ");
+                    scanf("%d", &val1);
+                } while (val1 != 0);
+                printf("\n\n");
                 break;
             }
 
-                //On ajoute un contact
             case 'B': {
                 int jour, mois, annee, h, min, dh, dmin;
                 printf("Entrer la date (J/M/A) : ");
@@ -38,9 +49,7 @@ void main_rdv(p_contact contact){
                 printf("Entrer la durée (heure,min) : ");
                 scanf("%d,%d", &dh, &dmin);
 
-                Add_rdv(&contact->rdv,
-                        Create_rdv(CreateDate(jour, mois, annee), CreateHour(h, min), CreateDuration(dh, dmin),
-                                   CreateObject()));
+                Add_rdv(&contact->rdv,Create_rdv(CreateDate(jour, mois, annee), CreateHour(h, min), CreateDuration(dh, dmin), CreateObject()));
                 break;
             }
 
@@ -57,9 +66,8 @@ void main_rdv(p_contact contact){
             }
 
             case 'D':
-                break;
+                return;
         }
-        return;
     }
 }
 
@@ -70,9 +78,8 @@ int main() {
 
     //Boucle infini
     while(1) {
-        //Menu principal
         printf("\t\t__MON AGENDA__\n");
-        printf("\033[1m1\033[0m | Mes contact.\n\033[1m2\033[0m | Rechercher un contact.\n\033[1m3\033[0m | Nouveau contact.\n\033[1m4\033[m | Sauvegarder et quitter.\n\n");
+        printf("1 | Mes contact.\n2 | Rechercher un contact.\n3 | Nouveau contact.\n4 | Sauvegarder et quitter.\n\n");
         int val = 0;
         do {
             printf("$ ");
@@ -92,26 +99,40 @@ int main() {
                 else
                     DisplayAllContact(MyContactList);
 
-                int val2;
+                int val1;
                 printf("Entrer 0 pour revenir en arrière.\n");
                 do {
                     printf("$ ");
-                    scanf("%d", &val2);
-                } while(val2 != 0);
+                    scanf("%d", &val1);
+                } while(val1 != 0);
                 printf("\n\n");
                 break;
             }
 
             case 2: {
-                //On recherche un contact
-                p_contact contact = Search_contact(MyContactList, scanString());
+                //Si la liste est vide
+                if(isEmptyContact(MyContactList, 0)) {
+                    printf("Vous n'avez aucun contact\n");
+                    int val2;
+                    printf("Entrer 0 pour revenir en arrière.\n");
+                    do {
+                        printf("$ ");
+                        scanf("%d", &val2);
+                    } while (val2 != 0);
+                    printf("\n\n");
+                }
 
-                //Si il n'existe pas //Marche pas encore
-                if(contact == NULL)
-                    printf("Ce contact n'existe pas\n");
+                //Si la liste n'est pas vide
+                else {
+                    p_contact contact = Search_contact(MyContactList, scanString());
 
-                //Si il existe
-                else main_rdv(contact);
+                    //Si il n'existe pas
+                    if (contact == NULL)
+                        printf("Ce contact n'existe pas\n");
+
+                    //Si il existe
+                    else main_rdv(contact);
+                }
                 break;
             }
 
