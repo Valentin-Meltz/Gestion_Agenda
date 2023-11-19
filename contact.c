@@ -33,7 +33,7 @@ char* scanString(){ //Attention : Pas de saisie sécurisé
 p_contact Create_contact(char* name){
     p_contact mycontact = (p_contact) malloc(sizeof(t_contact));
     mycontact->level = 0;
-    mycontact->rdv = NULL;
+    mycontact->rdv = CreateL_rdv();
     mycontact->next = (p_contact *) malloc(4 * sizeof(p_contact));
     for (int i = 0; i < 4 ; i++)
     {
@@ -277,7 +277,7 @@ void Save_contact(l_contact mylist){
         fprintf(stock_contact, formatName, temp->name);
 
         // Pour les rdv
-        p_rdv cur = temp->rdv->head;
+        p_rdv cur = temp->rdv.head;
         if(cur == NULL)     // Si la list est vide
             fprintf(stock_rdv, "%s", "NULL");
 

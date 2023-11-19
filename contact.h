@@ -7,7 +7,7 @@ char *scanString();
 
 struct contact {
     char* name;
-    l_rdv *rdv;
+    l_rdv rdv;
     int level;
     struct contact **next;
 };

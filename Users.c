@@ -31,7 +31,13 @@ void Main() {
                 if(contact == NULL)
                     printf("Ce contact n'existe pas\n");
                 else {
-
+                    printf("%s :\n", contact->name); //Fonction de Tuan pour bien afficher le contact
+                    printf("\tA | Mes rendez-vous\n\tB | Ajouter un rendez-vous\n\tC | Suprimer un rendez-vous\n\n");
+                    char choix;
+                    do{
+                        printf("$ ");
+                        scanf("%c", &choix);
+                    } while ('A' != choix);
                 }
                 break;
             }
@@ -59,6 +65,31 @@ void Main() {
 }
 
 void Main_Contact(p_contact contact){
-    //Fonction de Tuan pour bien afficher le contact
+    printf("%s\n", contact->name); //Fonction de Tuan pour bien afficher le contact
+
+    l_rdv mylist = contact->rdv;
+    p_rdv cur = mylist.head;
+    while(cur != NULL){
+        DisplayDate(cur->date);
+        printf(" ");
+        DisplayHour(cur->hour);
+        printf(" :\t");
+        cur = cur->next;
+    }
+    printf("\n");
+
+    cur = mylist.head;
+    while(cur != NULL){
+        printf("%s\t", cur->object);
+        cur = cur->next;
+    }
+    printf("\n");
+
+    cur = mylist.head;
+    while(cur != NULL){
+        DisplayDuration(cur->duration);
+        printf("\t");
+        cur = cur->next;
+    }
 
 }
