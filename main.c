@@ -11,8 +11,6 @@
 
 
 int main() {
-    l_contact MyContactList = CreateL_contact();
-    Load_contact(&MyContactList);
-    DisplayAllContact(MyContactList);
+    Main();
     return 0;
 }

@@ -36,8 +36,8 @@ void deleteContactLevel(l_contact*, p_contact);     //Supprime un contact
 
 
 void DisplayAllContact(l_contact);
-void Delete_contact(l_contact*, char*);     //Peut etre qu'on va pas la faire
-p_contact Search_contact(l_contact);
+p_contact SearchClassique_contact(l_contact, char*);
+p_contact Search_contact(l_contact, char*);
 void Save_contact(l_contact);
 void Load_contact(l_contact*);
 #endif //GESTION_AGENDA_CONTACT_H

@@ -5,7 +5,6 @@
 #include "rendez-vous.h"
 
 void Main();
-void Main_A();
-void Main_B(l_contact);
-void Main_C(l_contact);
+
+void Main_Contact(p_contact);
 #endif //GESTION_AGENDA_USERS_H

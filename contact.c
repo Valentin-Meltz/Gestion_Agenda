@@ -5,9 +5,11 @@
 #include "contact.h"
 #include "rendez-vous.h"
 
+static int cptRecherche = 0;
+
 char* scanString(){ //Attention : Pas de saisie sécurisé
     // On saisit le nom et prénom
-    char *S_name = (char*) malloc(50 * sizeof(char)), *F_name = (char*) malloc(50 * sizeof(char));
+    char *S_name = (char*) malloc(100 * sizeof(char)), *F_name = (char*) malloc(100 * sizeof(char));
     printf("Saisir le nom : ");
     scanf("%s %s", S_name, F_name);
 
@@ -83,7 +85,7 @@ void Add_contact(l_contact* mylist, p_contact newContact){
     // Calcul de niveau du contact
     newContact->level = calculContactLevel(*mylist, newContact);
 
-    //B oucle pour chaque niveau
+    //Boucle pour chaque niveau
     for (int i = 0; i < newContact->level; i++){
         // Si on ajoute par la tête
         if (isEmptyContact(*mylist, i) || strcmp(newContact->name, mylist->head[i]->name) < 0)
@@ -201,6 +203,56 @@ int calculContactLevel(l_contact myContactList, p_contact newContact){
     if(newContact->name[0] == prev->name[0] && newContact->name[1] == prev->name[1] && newContact->name[2] != prev->name[2]) return 2;      // Si on insère au niveau 1
     return 1;
 }
+p_contact SearchClassique_contact(l_contact myContactList, char* name){
+    p_contact cur = myContactList.head[0];
+    while (cur != NULL && strcmp(cur->name, name) != 0){
+        cptRecherche++;
+        cur = cur->next[0];
+    }
+    return cur;
+}
+p_contact Search_contact(l_contact myContactList, char* name){
+    int level = myContactList.max_level - 1;
+    while(isEmptyContact(myContactList, level)){
+        level --;
+    }
+
+    p_contact startContact = myContactList.head[level], endContact = myContactList.tail[level];
+    while(level != -1) {
+        // Si start est la bonne cell
+        if(!strcmp(startContact->name, name)) return startContact;
+        cptRecherche ++;
+
+        // Si end est la bonne cell
+        if(!strcmp(endContact->name, name)) return endContact;
+        cptRecherche ++;
+
+        // On recherche au millieu
+        // Si start est supérieur à val
+        if(strcmp(startContact->name, name) > 0) startContact = myContactList.head[level - 1];
+
+            // Si Start est inférieur à val
+        else if (strcmp(endContact->name, name) < 0) endContact = myContactList.tail[level -1];
+
+            // Si val est entre les bornes
+        else {
+            p_contact cur = startContact, prev = cur;
+            while (strcmp(cur->name, name) < 0 || !strcmp(cur->name, name)) {
+                // Si on trouve la valeur
+                if (!strcmp(cur->name, name)) return cur;
+
+                cptRecherche ++;
+                prev = cur;
+                cur = cur->next[level];
+            }
+            // On change les bornes
+            startContact = prev;
+            endContact = cur;
+        }
+        level --; // On décrémente le niveau
+    }
+    return NULL;
+}
 void DisplayAllContact(l_contact mylist){
     for(int i = 0; i < mylist.max_level; i++){
         printf("[list head_%d @-]-->", i);
@@ -211,17 +263,6 @@ void DisplayAllContact(l_contact mylist){
             temp = temp->next[i];
         }
         printf("NULL\n");
-    }
-}
-//
-void Delete_contact(l_contact* mylist, char* name){     //Je laisse ca la mais on va peut etre pas delete les contatcs
-    p_contact temp = mylist->head[0], prev = temp;
-    if(strcmp(temp->name, name) == 0){
-        mylist->head[0] = temp->next[0];
-        mylist->head[1] = temp->next[1];
-        mylist->head[2] = temp->next[2];
-        mylist->head[3] = temp->next[3];
-        Add_contact(mylist, mylist->head[0]);
     }
 }
 
@@ -250,18 +291,21 @@ void Save_contact(l_contact mylist){
 
     fclose(stock_rdv);
     fclose(stock_contact);
-}   //
+}
 void Load_contact(l_contact* mylist){
-    char formatName[]  = "%s\n";
     char *name = (char*) malloc(100 * sizeof(char)), *l_rdv;
     FILE *stock_contact = fopen("Stock_contact.txt","r");
     FILE *stock_rdv = fopen("Stock_rdv.txt","r");
 
+    fscanf(stock_rdv, "%[^\n] ", l_rdv);
+    printf("%s\n", l_rdv);
     // Pour les contacts
-    while(fscanf(stock_contact, formatName, name) != EOF){
+    while(fscanf(stock_contact, "‰s\n", name) != EOF){
         p_contact contact = Create_contact(name);
-        /*
+
         fscanf(stock_rdv, "%[^\n] ", l_rdv);    // Pour les rdv
+        printf("%s\n", l_rdv);
+        /*
         if(strcmp(l_rdv, "NULL") != 0){
             char *token;
             token = strtok(l_rdv, "\t");   //  On decoupe la ligne
@@ -272,6 +316,6 @@ void Load_contact(l_contact* mylist){
             } while (token != NULL);
         }
         */
-        Add_contact(mylist, contact);
+        //Add_contact(mylist, contact);
     }
 }   //
