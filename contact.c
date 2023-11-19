@@ -37,11 +37,12 @@ p_contact Create_contact(char* name){
     {
         mycontact->next[i] = NULL;
     }
-    mycontact->name = name;
+    mycontact->name = (char*) malloc(100 * sizeof(char));
+    strcpy(mycontact->name, name);
     return mycontact;
 }
 void Display_contact(p_contact contact){
-    printf("[%s|@-]", contact->name);
+    printf("[%s |@-]", contact->name);
 }
 
 
@@ -252,13 +253,14 @@ void Save_contact(l_contact mylist){
 }   //
 void Load_contact(l_contact* mylist){
     char formatName[]  = "%s\n";
-    char *name, *l_rdv;
+    char *name = (char*) malloc(100 * sizeof(char)), *l_rdv;
     FILE *stock_contact = fopen("Stock_contact.txt","r");
     FILE *stock_rdv = fopen("Stock_rdv.txt","r");
 
     // Pour les contacts
-    while(fscanf(stock_contact, formatName, &name) != EOF){
+    while(fscanf(stock_contact, formatName, name) != EOF){
         p_contact contact = Create_contact(name);
+        /*
         fscanf(stock_rdv, "%[^\n] ", l_rdv);    // Pour les rdv
         if(strcmp(l_rdv, "NULL") != 0){
             char *token;
@@ -269,5 +271,7 @@ void Load_contact(l_contact* mylist){
                 token = strtok(NULL, "\t");
             } while (token != NULL);
         }
+        */
+        Add_contact(mylist, contact);
     }
 }   //

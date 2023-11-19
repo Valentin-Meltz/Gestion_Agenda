@@ -1,57 +1,46 @@
-#include "Users.h"
 #include <stdio.h>
+#include <stdlib.h>
 
-/*int Menu()
-{
-    int v;
-    for(int i = 0;i<75;i++)
-    {
-        printf("%c",'-');
-    }
-    printf("\n|| 1. Rechercher un contact                                              ||\n|| 2. Afficher les rendez-vous d\'un contact                              ||\n|| 3. Creer un contact                                                   ||\n|| 4. Creer un rendez-vous pour un contact                               ||\n|| 5. Supprimer un rendez-vous                                           ||\n|| 6. Sauvegarder le fichier de tous les rendez-vous                     ||\n|| 7. Charger un fichier de rendez-vous                                  ||\n|| 8. Fournir les temps de calcul pour une insertion de nouveau contact  || \n");
-    for(int i = 0;i<75;i++)
-    {
-        printf("%c",'-');
-    }
-    printf("\nVeuiller choisir un action a realiser : ");
-    scanf("%d",&v);
-    switch (v) {
-        case 1:{
-            Main_A(?);
-            break;
-        }
-        case 2:{
-            Main_B(?);
-            break;
-        }
-        case 3:{
-            Main_C(?);
-            break;
-        }
-        case 4:{
-            Main_D(?);
-            break;
-        }
-        case 5:{
-            Main_E(?);
-            break;
-        }
-        case 6:{
-            Main_F(?);
-            break;
-        }
-        case 7:{
-            Main_G(?);
-            break;
-        }
-        case 8:{
-            Main_H(?);
-            break;
-        }
-        default:{
-            Menu();
+#include "Users.h"
+#include "contact.h"
+#include "rendez-vous.h"
+
+void Main() {
+    l_contact MyContactList = CreateL_contact();
+    Load_contact(&MyContactList);
+    while(1) {
+        printf("\t\t__MON AGENDA__\n");
+        printf("\033[1m1\033[0m | Mes contact.\n\033[1m2\033[0m | Rechercher un contact.\n\033[1m3\033[0m | Nouveau contact.\n\033[1m4\033[m | Mes temps de calcul.\n\033[1m5\033[0m | Sauvegarder et quitter.\n\n");
+        int val;
+        do {
+            printf("$ ");
+            scanf("%d", &val);
+        } while (val <= 0 || val >= 6);
+        switch (val) {
+            case 1: {
+                system("clear");
+                printf("\t\t__Mes Contacts__\n");
+                //On affiche tous les contacts avec l'appels de la fonction
+                //Pour l'instant
+                DisplayAllContact(MyContactList);
+                break;
+            }
+            case 2: {
+                //Fonction d'implémentation à partir de 3 caractère
+                break;
+            }
+            case 3: {
+                Add_contact(&MyContactList, Create_contact(scanString()));
+                break;
+            }
+            case 4: {
+                //On appelle la fonction d'affichage des temps de calcul
+                break;
+            }
+            default: {
+                //On sauvegarde
+                exit(EXIT_SUCCESS);
+            }
         }
     }
-    return v;
 }
- */

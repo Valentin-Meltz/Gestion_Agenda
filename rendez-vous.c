@@ -99,7 +99,8 @@ p_rdv Create_rdv(p_date date, p_hour h, p_duration d, char* object){
     rdv->date = date;
     rdv->hour = h;
     rdv->duration = d;
-    rdv->object = object;
+    rdv->object = (char*) malloc(1000 * sizeof(char));
+    strcpy(rdv->object, object);
     rdv->next = NULL;
     return rdv;
 }
