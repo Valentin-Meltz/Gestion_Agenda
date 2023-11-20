@@ -1,6 +1,8 @@
 #ifndef GESTION_AGENDA_RENDEZ_VOUS_H
 #define GESTION_AGENDA_RENDEZ_VOUS_H
 
+#include "contact.h"
+
 //Structure de la date d'un rendez-vous
 struct Date{
     int day;
@@ -12,7 +14,6 @@ typedef struct Date t_date, *p_date;
 p_date CreateDate(int, int, int);
 int CompareDate(p_date, p_date);
 void DisplayDate(p_date);
-p_date Load_date(char*);
 
 
 //Structure de l'heure et durée d'un rendez-vous
@@ -25,11 +26,9 @@ typedef struct Hour t_hour, *p_hour, t_duration, *p_duration;
 p_hour CreateHour(int, int);
 int CompareHour(p_hour , p_hour);
 void DisplayHour(p_hour);
-p_hour Load_hour(char*);
 
 p_duration CreateDuration(int, int);
 void DisplayDuration(p_duration);
-p_duration Load_duration(char*);
 
 //Structure d'un rendez-vous
 struct rendez_vous{
@@ -61,6 +60,7 @@ void Add_Tail_rdv(l_rdv*, p_rdv);
 void Add_rdv(l_rdv*, p_rdv);
 p_rdv Delete_rdv(l_rdv*, p_date, p_hour);
 void DisplayL_rdv(l_rdv);
-p_rdv Load_rdv(char*);
+void Save_rdv(p_contact);
+void Load_rdv(p_contact);
 
 #endif //GESTION_AGENDA_RENDEZ_VOUS_H

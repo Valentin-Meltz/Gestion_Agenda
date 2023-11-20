@@ -267,55 +267,31 @@ void DisplayAllContact(l_contact mylist){
 }
 
 void Save_contact(l_contact mylist){
-    char formatName[]  = "%s\n", formatRdv[] = "%d/%d/%d %d,%d %d,%d %s\t";
+    char formatName[]  = "%s\n";
     FILE *stock_contact = fopen("Stock_contact.txt","w");
-    FILE *stock_rdv = fopen("Stock_rdv.txt","w");
 
     // Pour les contacts
     p_contact temp = mylist.head[0];
     while (temp != NULL){
         fprintf(stock_contact, formatName, temp->name);
-
-        // Pour les rdv
-        p_rdv cur = temp->rdv.head;
-        if(cur == NULL)     // Si la list est vide
-            fprintf(stock_rdv, "%s", "NULL");
-
-        while (cur != NULL){    // Si la list n'est pas vide
-            fprintf(stock_rdv, formatRdv, cur->date->day, cur->date->month, cur->date->year, cur->hour->hour, cur->hour->minute, cur->duration->hour, cur->duration->minute, cur->object);
-            cur = cur->next;
-        }
-        fprintf(stock_rdv, "\n");
         temp = temp->next[0];
     }
 
-    fclose(stock_rdv);
     fclose(stock_contact);
 }
 void Load_contact(l_contact* mylist){
-    char *name = (char*) malloc(100 * sizeof(char)), *l_rdv;
+    char *name = (char*) malloc(100 * sizeof(char));
     FILE *stock_contact = fopen("Stock_contact.txt","r");
-    FILE *stock_rdv = fopen("Stock_rdv.txt","r");
 
-    fscanf(stock_rdv, "%[^\n] ", l_rdv);
-    printf("%s\n", l_rdv);
-    // Pour les contacts
-    while(fscanf(stock_contact, "‰s\n", name) != EOF){
-        p_contact contact = Create_contact(name);
-
-        fscanf(stock_rdv, "%[^\n] ", l_rdv);    // Pour les rdv
-        printf("%s\n", l_rdv);
-        /*
-        if(strcmp(l_rdv, "NULL") != 0){
-            char *token;
-            token = strtok(l_rdv, "\t");   //  On decoupe la ligne
-            do{
-                p_rdv rdv = Load_rdv(token);
-                Add_rdv(contact->rdv, rdv);
-                token = strtok(NULL, "\t");
-            } while (token != NULL);
-        }
-        */
-        //Add_contact(mylist, contact);
+    if(stock_contact == NULL){
+        perror("Erreur lors de l'ouverture du fichier");
+        return;
     }
-}   //
+
+    while(fscanf(stock_contact, "%99[^\n]\n", name) == 1){
+        p_contact contact = Create_contact(name);
+        Add_contact(mylist, contact);
+    }
+
+    fclose(stock_contact);
+}

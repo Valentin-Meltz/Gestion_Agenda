@@ -32,12 +32,11 @@ void Maj_contact(l_contact*, p_contact);    //Mise à jour du niveau d'un contac
 
 int isEmptyContact(l_contact, int);     //Détermine si la liste est vide ou non
 int calculContactLevel(l_contact, p_contact);   //Calcul le nievau auxquel doit être ajouté un contact
-void deleteContactLevel(l_contact*, p_contact);     //Supprime un contact
-
 
 void DisplayAllContact(l_contact);
 p_contact SearchClassique_contact(l_contact, char*);
 p_contact Search_contact(l_contact, char*);
 void Save_contact(l_contact);
 void Load_contact(l_contact*);
+
 #endif //GESTION_AGENDA_CONTACT_H

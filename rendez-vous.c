@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "rendez-vous.h"
+#include "contact.h"
 
 // Fonction relativent à la date
 p_date CreateDate(int day, int mounth, int year){
@@ -26,16 +27,6 @@ int CompareDate(p_date date1, p_date date2){
 void DisplayDate(p_date date){
     printf("%d/%d/%d", date->day, date->month, date->year);
 }
-p_date Load_date(char* date){
-    char *token, **token_rdv = (char **) malloc(3 * sizeof(char *));
-    token = strtok(date, "/");
-    int i = 0;
-    do{
-        token_rdv[i++] = token;
-        token = strtok(NULL, " ");
-    } while(token != NULL);
-    return CreateDate(atoi(token_rdv[0]), atoi(token_rdv[1]), atoi(token_rdv[2]));
-}
 
 // Fonction relativent à l'heure
 p_hour CreateHour(int hour, int min){
@@ -55,16 +46,6 @@ int CompareHour(p_hour h1, p_hour h2){
 void DisplayHour(p_hour h){
     printf("%dh%d", h->hour, h->minute);
 }
-p_hour Load_hour(char* hour){
-    char *token, **token_rdv = (char **) malloc(2 * sizeof(char *));
-    token = strtok(hour, ",");
-    int i = 0;
-    do{
-        token_rdv[i++] = token;
-        token = strtok(NULL, " ");
-    } while(token != NULL);
-    return CreateHour(atoi(token_rdv[0]), atoi(token_rdv[1]));
-}
 
 // Fonction relativent à la durée
 p_duration CreateDuration(int hour, int min){
@@ -78,16 +59,6 @@ void DisplayDuration(p_duration d){
         printf("%dh%d", d->hour, d->minute);
     else
         printf("%dmin", d->minute);
-}
-p_duration Load_duration(char* d){
-    char *token, **token_rdv = (char **) malloc(2 * sizeof(char *));
-    token = strtok(d, ",");
-    int i = 0;
-    do{
-        token_rdv[i++] = token;
-        token = strtok(NULL, " ");
-    } while(token != NULL);
-    return CreateDuration(atoi(token_rdv[0]), atoi(token_rdv[1]));
 }
 
 // Fonction relativent au rdv
@@ -232,16 +203,40 @@ void DisplayL_rdv(l_rdv mylist){
         cur = cur->next;
     }
 }
-p_rdv Load_rdv(char* rdv){
-    char *token, **token_rdv = (char **) malloc(4 * sizeof(char *));
-    token = strtok(rdv, " ");
-    int i = 0;
-    do{
-        token_rdv[i++] = token;
-        token = strtok(NULL, " ");
-    } while(token != NULL);
-    p_date date = Load_date(token_rdv[0]);
-    p_hour h = Load_hour(token_rdv[1]);
-    p_duration d = Load_duration(token_rdv[2]);
-    return Create_rdv(date, h, d, token_rdv[3]);
-}   //
+void Save_rdv(p_contact contact){
+    char *fileName = strcat(contact->name, ".txt");
+    char *format = "%d/%d/%d\t%d,%d\t%d,%d\t%s\n";
+    FILE *stock_rdv = fopen(fileName,"w");
+
+    if(stock_rdv == NULL){
+        perror("Erreur lors de l'ouverture du fichier");
+        return;
+    }
+
+    p_rdv cur = contact->rdv.head;
+    while (cur != NULL){
+        fprintf(stock_rdv, format, cur->date->day, cur->date->month, cur->date->year, cur->hour->hour, cur->hour->minute, cur->duration->hour, cur->duration->minute, cur->object);
+        cur = cur->next;
+    }
+
+    fclose(stock_rdv);
+}
+void Load_rdv(p_contact contact){
+    char *fileName = strcat(contact->name, ".txt");
+    char *format = "%d/%d/%d\t%d,%d\t%d,%d\t%s\n";
+    FILE *stock_rdv = fopen(fileName,"r");
+
+    if(stock_rdv == NULL){
+        perror("Erreur lors de l'ouverture du fichier");
+        return;
+    }
+
+    int j = 0, m = 0, a = 0, h = 0, min = 0, dh = 0, dmin =0;
+    char *object = (char*) malloc(1000 * sizeof(char));
+    while(fscanf(stock_rdv, format, &j, &m, &a, &h, &min, &dh, &dmin, object) == 1){
+        p_rdv rdv = Create_rdv(CreateDate(j, m, a), CreateHour(h, min), CreateDuration(dh, dmin), object);
+        Add_rdv(&contact->rdv, rdv);
+    }
+
+    fclose(stock_rdv);
+}

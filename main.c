@@ -1,15 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <curses.h>
 
 #include "module timer-20231031/timer.h"
-#include "s_d_list.h"
 #include "contact.h"
 #include "rendez-vous.h"
-#include "Users.h"
 
 void main_rdv(p_contact contact){
+    Load_rdv(contact);
+
     while(1) {
         printf("%s :\n", contact->name); //Fonction de Tuan pour bien afficher le contact
         printf("A | Mes rendez-vous\nB | Ajouter un rendez-vous\nC | Suprimer un rendez-vous\nD | Retour\n\n");
@@ -49,7 +47,7 @@ void main_rdv(p_contact contact){
                 printf("Entrer la durée (heure,min) : ");
                 scanf("%d,%d", &dh, &dmin);
 
-                Add_rdv(&contact->rdv,Create_rdv(CreateDate(jour, mois, annee), CreateHour(h, min), CreateDuration(dh, dmin), CreateObject()));
+                Add_rdv(&contact->rdv, Create_rdv(CreateDate(jour, mois, annee), CreateHour(h, min), CreateDuration(dh, dmin), CreateObject()));
                 break;
             }
 
@@ -73,8 +71,10 @@ void main_rdv(p_contact contact){
                 break;
             }
 
-            case 'D':
+            default: {
+                Save_rdv(contact);
                 return;
+            }
         }
     }
 }
@@ -82,7 +82,7 @@ void main_rdv(p_contact contact){
 int main() {
     //On crée notre liste de contact
     l_contact MyContactList = CreateL_contact();
-    //Load_contact(&MyContactList);
+    Load_contact(&MyContactList);
 
     //Boucle infini
     while(1) {
@@ -150,10 +150,9 @@ int main() {
             }
 
             default: {
-                //On sauvegarde
+                Save_contact(MyContactList);
                 exit(EXIT_SUCCESS);
             }
         }
     }
-    return 0;
 }
