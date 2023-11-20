@@ -17,7 +17,7 @@ void main_rdv(p_contact contact){
         do {
             printf("$ ");
             scanf("%c", &choix);
-        } while (choix != 'A' && choix != 'B' && choix != 'C');
+        } while (choix != 'A' && choix != 'B' && choix != 'C' && choix != 'D');
 
         switch (choix) {
             case 'A': {
@@ -61,7 +61,15 @@ void main_rdv(p_contact contact){
                 printf("Entrer l'heure (heure,min) : ");
                 scanf("%d,%d", &h, &min);
 
-                Delete_rdv(&contact->rdv, CreateDate(jour, mois, annee), CreateHour(h, min));
+                p_rdv deleteRdv = Delete_rdv(&contact->rdv, CreateDate(jour, mois, annee), CreateHour(h, min));
+                if(deleteRdv == NULL)
+                    printf("Ce rendez-vous n'existe pas\n");
+                else {
+                    free(deleteRdv->date);
+                    free(deleteRdv->hour);
+                    free(deleteRdv->duration);
+                    free(deleteRdv);
+                }
                 break;
             }
 

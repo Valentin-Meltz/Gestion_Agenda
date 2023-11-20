@@ -26,6 +26,7 @@ p_hour CreateHour(int, int);
 int CompareHour(p_hour , p_hour);
 void DisplayHour(p_hour);
 p_hour Load_hour(char*);
+
 p_duration CreateDuration(int, int);
 void DisplayDuration(p_duration);
 p_duration Load_duration(char*);
@@ -44,7 +45,6 @@ p_rdv Create_rdv(p_date, p_hour, p_duration, char*);
 char* CreateObject();
 int CompareRdv(p_rdv, p_rdv);
 void Display_rdv(p_rdv);
-void Edit_rdv(p_rdv);   //Paul
 
 //Structure d'une liste de rendez-vous
 struct list_rdv {
@@ -55,12 +55,12 @@ typedef struct list_rdv l_rdv;
 
 l_rdv CreateL_rdv();
 int isEmptyRdv(l_rdv);
+int isRdvInList(l_rdv, p_date, p_hour);
 void Add_Head_rdv(l_rdv*, p_rdv);
 void Add_Tail_rdv(l_rdv*, p_rdv);
-void Add_rdv(l_rdv*, p_rdv);    //Valentin
-void Delete_rdv(l_rdv*, p_date, p_hour);
+void Add_rdv(l_rdv*, p_rdv);
+p_rdv Delete_rdv(l_rdv*, p_date, p_hour);
 void DisplayL_rdv(l_rdv);
-p_rdv Search_rdv(l_rdv, p_date, p_hour);
 p_rdv Load_rdv(char*);
 
 #endif //GESTION_AGENDA_RENDEZ_VOUS_H

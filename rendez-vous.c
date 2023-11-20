@@ -45,8 +45,11 @@ p_hour CreateHour(int hour, int min){
     return h;
 }
 int CompareHour(p_hour h1, p_hour h2){
-    if(h1->hour == h2->hour)
-        return h1->minute <= h2->minute;
+    if(h1->hour == h2->hour) {
+        if (h1->minute == h2->minute)
+            return 2;
+        return h1->minute < h2->minute;
+    }
     return h1->hour < h2->hour;
 }
 void DisplayHour(p_hour h){
@@ -90,8 +93,9 @@ p_duration Load_duration(char* d){
 // Fonction relativent au rdv
 char* CreateObject(){
     char *object = (char*) malloc(1000 * sizeof(char));
-    printf("Quel est l'objet de ce rendez-vous ? ");
-    fgets(object, 1000, stdin);
+    do {
+        printf("Quel est l'objet de ce rendez-vous ? ");
+    } while (fgets(object, 1000, stdin) == NULL);
     return object;
 }
 p_rdv Create_rdv(p_date date, p_hour h, p_duration d, char* object){
@@ -128,6 +132,17 @@ l_rdv CreateL_rdv(){
 }
 int isEmptyRdv(l_rdv myRdvList){
     return myRdvList.head == NULL && myRdvList.tail == NULL;
+}
+int isRdvInList(l_rdv myRdvlist, p_date d, p_hour h){
+    if(isEmptyRdv(myRdvlist)) return 0;
+    if(CompareDate(myRdvlist.head->date, d) == 2 && CompareHour(myRdvlist.head->hour, h) == 2) return 1;
+    if(CompareDate(myRdvlist.tail->date, d) == 2 && CompareHour(myRdvlist.tail->hour, h) == 2) return 1;
+    p_rdv cur = myRdvlist.head;
+    while (cur != myRdvlist.tail){
+        if(CompareDate(cur->date, d) == 2 && CompareHour(cur->hour, h) == 2) return 1;
+        cur = cur->next;
+    }
+    return 0;
 }
 void Add_Head_rdv(l_rdv* mylist, p_rdv rdv){
     if(isEmptyRdv(*mylist)){
@@ -173,27 +188,42 @@ void Add_rdv(l_rdv* mylist, p_rdv rdv){
         prev->next = rdv;
     }
 }
-void Delete_rdv(l_rdv* mylist, p_date date, p_hour h){
-    if(date == mylist->head->date && h == mylist->head->hour){
-        p_rdv rdv = mylist->head;
-        mylist->head = rdv->next;
-        free(rdv->date);
-        free(rdv->hour);
-        free(rdv->duration);
-        free(rdv);
-    } else{
-        p_rdv temp = mylist->head, prev = temp;
-        while (temp != mylist->tail && temp->date != date && temp->hour != h){
-            prev = temp;
-            temp = temp->next;
-        }
-        prev->next = temp->next;
-        free(temp->date);
-        free(temp->hour);
-        free(temp->duration);
-        free(temp);
+p_rdv Delete_rdv(l_rdv* mylist, p_date d, p_hour h){
+    //Si il est dans la liste
+    if(!isRdvInList(*mylist, d, h)) return NULL;
+    p_rdv cur = mylist->head;
+
+    //Si il n'y as qu'un seul rendez-vous
+    if(cur == mylist->tail){
+        mylist->head = NULL;
+        mylist->tail = NULL;
     }
-}   //
+
+    //Si il y a plusieurs rendez-vous et qu'il est a la tête
+    else if(CompareDate(cur->date, d) == 2 && CompareHour(cur->hour, h) == 2){
+        mylist->head = cur->next;
+    }
+
+    // Si le rendez-vous est au millieu
+    else{
+        p_rdv prev = cur;
+        while (cur != NULL){
+            //Si on trouve le rendez-vous à supp
+            if(CompareDate(cur->date, d) == 2 && CompareHour(cur->hour, h) == 2){
+                if(cur == mylist->tail){
+                    mylist->tail = prev;
+                    prev->next = NULL;
+                } else
+                    prev->next = cur->next;
+                break;
+            }
+            prev = cur;
+            cur = cur->next;
+        }
+        free(prev);
+    }
+    return cur;
+}
 void DisplayL_rdv(l_rdv mylist){
     p_rdv cur = mylist.head;
     while(cur != NULL){
@@ -202,16 +232,6 @@ void DisplayL_rdv(l_rdv mylist){
         cur = cur->next;
     }
 }
-p_rdv Search_rdv(l_rdv mylist, p_date date, p_hour h){
-    if(mylist.head->date == date && mylist.head->hour == h) return mylist.head;
-    if(mylist.tail->date == date && mylist.tail->hour == h) return mylist.tail;
-    p_rdv temp = mylist.head;
-    while (temp != NULL){
-        if(temp->date == date && temp->hour == h) return temp;
-        temp = temp->next;
-    }
-    return NULL;
-}   //
 p_rdv Load_rdv(char* rdv){
     char *token, **token_rdv = (char **) malloc(4 * sizeof(char *));
     token = strtok(rdv, " ");
