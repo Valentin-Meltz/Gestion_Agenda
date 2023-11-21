@@ -6,7 +6,7 @@
 #include "rendez-vous.h"
 
 void main_rdv(p_contact contact){
-    Load_rdv(contact);
+    contact->rdv = Load_rdv(contact->name);
 
     while(1) {
         printf("%s :\n", contact->name); //Fonction de Tuan pour bien afficher le contact
@@ -72,7 +72,7 @@ void main_rdv(p_contact contact){
             }
 
             default: {
-                Save_rdv(contact);
+                Save_rdv(contact->rdv, contact->name);
                 return;
             }
         }
@@ -145,12 +145,15 @@ int main() {
             }
 
             case 3: {
-                Add_contact(&MyContactList, Create_contact(scanString()));
+                p_contact contact = Create_contact(scanString());
+                Add_contact(&MyContactList, contact);
+                Save_rdv(contact->rdv, contact->name);
                 break;
             }
 
             default: {
                 Save_contact(MyContactList);
+                printf("A Bientôt");
                 exit(EXIT_SUCCESS);
             }
         }

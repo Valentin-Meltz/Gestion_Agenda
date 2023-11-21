@@ -3,7 +3,6 @@
 #include <string.h>
 
 #include "rendez-vous.h"
-#include "contact.h"
 
 // Fonction relativent à la date
 p_date CreateDate(int day, int mounth, int year){
@@ -203,8 +202,8 @@ void DisplayL_rdv(l_rdv mylist){
         cur = cur->next;
     }
 }
-void Save_rdv(p_contact contact){
-    char *fileName = strcat(contact->name, ".txt");
+void Save_rdv(l_rdv myRdvList, char* name){
+    char *fileName = (char*) malloc(100 * sizeof(char)); strcpy(fileName, name); strcat(fileName, ".txt");
     char *format = "%d/%d/%d\t%d,%d\t%d,%d\t%s\n";
     FILE *stock_rdv = fopen(fileName,"w");
 
@@ -213,7 +212,7 @@ void Save_rdv(p_contact contact){
         return;
     }
 
-    p_rdv cur = contact->rdv.head;
+    p_rdv cur = myRdvList.head;
     while (cur != NULL){
         fprintf(stock_rdv, format, cur->date->day, cur->date->month, cur->date->year, cur->hour->hour, cur->hour->minute, cur->duration->hour, cur->duration->minute, cur->object);
         cur = cur->next;
@@ -221,22 +220,24 @@ void Save_rdv(p_contact contact){
 
     fclose(stock_rdv);
 }
-void Load_rdv(p_contact contact){
-    char *fileName = strcat(contact->name, ".txt");
+l_rdv Load_rdv(char* name){
+    l_rdv myRdvList = CreateL_rdv();
+    char *fileName = (char*) malloc(100 * sizeof(char)); strcpy(fileName, name); strcat(fileName, ".txt");
     char *format = "%d/%d/%d\t%d,%d\t%d,%d\t%s\n";
     FILE *stock_rdv = fopen(fileName,"r");
 
     if(stock_rdv == NULL){
         perror("Erreur lors de l'ouverture du fichier");
-        return;
+        return myRdvList;
     }
 
     int j = 0, m = 0, a = 0, h = 0, min = 0, dh = 0, dmin =0;
     char *object = (char*) malloc(1000 * sizeof(char));
     while(fscanf(stock_rdv, format, &j, &m, &a, &h, &min, &dh, &dmin, object) == 1){
         p_rdv rdv = Create_rdv(CreateDate(j, m, a), CreateHour(h, min), CreateDuration(dh, dmin), object);
-        Add_rdv(&contact->rdv, rdv);
+        Add_rdv(&myRdvList, rdv);
     }
 
     fclose(stock_rdv);
+    return myRdvList;
 }
