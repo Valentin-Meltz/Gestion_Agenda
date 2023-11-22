@@ -268,7 +268,7 @@ void DisplayAllContact(l_contact mylist){
 
 void Save_contact(l_contact mylist){
     char formatName[]  = "%s\n";
-    FILE *stock_contact = fopen("Stock_contact.txt","w");
+    FILE *stock_contact = fopen("FichierTexte/Stock_contact.txt","w");
 
     // Pour les contacts
     p_contact temp = mylist.head[0];
@@ -281,7 +281,7 @@ void Save_contact(l_contact mylist){
 }
 void Load_contact(l_contact* mylist){
     char *name = (char*) malloc(100 * sizeof(char));
-    FILE *stock_contact = fopen("Stock_contact.txt","r");
+    FILE *stock_contact = fopen("FichierTexte/Stock_contact.txt","r");
 
     if(stock_contact == NULL){
         perror("Erreur lors de l'ouverture du fichier");

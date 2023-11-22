@@ -203,7 +203,7 @@ void DisplayL_rdv(l_rdv mylist){
     }
 }
 void Save_rdv(l_rdv myRdvList, char* name){
-    char *fileName = (char*) malloc(100 * sizeof(char)); strcpy(fileName, name); strcat(fileName, ".txt");
+    char *fileName = (char*) malloc(100 * sizeof(char)); strcpy(fileName, "FichierTexte/FichierRdv/"); strcat(fileName, name); strcat(fileName, ".txt");
     char *format = "%d/%d/%d\t%d,%d\t%d,%d\t%s\n";
     FILE *stock_rdv = fopen(fileName,"w");
 
@@ -222,8 +222,9 @@ void Save_rdv(l_rdv myRdvList, char* name){
 }
 l_rdv Load_rdv(char* name){
     l_rdv myRdvList = CreateL_rdv();
-    char *fileName = (char*) malloc(100 * sizeof(char)); strcpy(fileName, name); strcat(fileName, ".txt");
+    char *fileName = (char*) malloc(100 * sizeof(char)); strcpy(fileName, "FichierTexte/FichierRdv/"); strcat(fileName, name); strcat(fileName, ".txt");
     char *format = "%d/%d/%d\t%d,%d\t%d,%d\t%s\n";
+
     FILE *stock_rdv = fopen(fileName,"r");
 
     if(stock_rdv == NULL){
@@ -234,7 +235,6 @@ l_rdv Load_rdv(char* name){
     int j = 0, m = 0, a = 0, h = 0, min = 0, dh = 0, dmin =0;
     char *object = (char*) malloc(1000 * sizeof(char));
     while(fscanf(stock_rdv, format, &j, &m, &a, &h, &min, &dh, &dmin, object) != EOF){
-        printf("On lis le rdv\n");
         p_rdv rdv = Create_rdv(CreateDate(j, m, a), CreateHour(h, min), CreateDuration(dh, dmin), object);
         Add_rdv(&myRdvList, rdv);
     }
