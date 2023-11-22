@@ -233,7 +233,8 @@ l_rdv Load_rdv(char* name){
 
     int j = 0, m = 0, a = 0, h = 0, min = 0, dh = 0, dmin =0;
     char *object = (char*) malloc(1000 * sizeof(char));
-    while(fscanf(stock_rdv, format, &j, &m, &a, &h, &min, &dh, &dmin, object) == 1){
+    while(fscanf(stock_rdv, format, &j, &m, &a, &h, &min, &dh, &dmin, object) != EOF){
+        printf("On lis le rdv\n");
         p_rdv rdv = Create_rdv(CreateDate(j, m, a), CreateHour(h, min), CreateDuration(dh, dmin), object);
         Add_rdv(&myRdvList, rdv);
     }
