@@ -42,6 +42,7 @@ p_rdv Create_rdv(p_date, p_hour, p_duration, char*);
 char* CreateObject();
 int CompareRdv(p_rdv, p_rdv);
 void Display_rdv(p_rdv);
+void FreeRdv(p_rdv);
 
 //Structure d'une liste de rendez-vous
 struct list_rdv {
@@ -60,5 +61,6 @@ p_rdv Delete_rdv(l_rdv*, p_date, p_hour);
 void DisplayL_rdv(l_rdv);
 void Save_rdv(l_rdv, char*);
 l_rdv Load_rdv(char*);
+void FreeRdvList(l_rdv);
 
 #endif //GESTION_AGENDA_RENDEZ_VOUS_H

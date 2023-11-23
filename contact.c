@@ -10,7 +10,7 @@ static int cptRecherche = 0;
 char* scanString(){ //Attention : Pas de saisie sécurisé
     // On saisit le nom et prénom
     char *S_name = (char*) malloc(100 * sizeof(char)), *F_name = (char*) malloc(100 * sizeof(char));
-    printf("Saisir le nom : ");
+    printf("Saisir le nom (Prénom Nom) : ");
     scanf("%s %s", S_name, F_name);
 
     // Convertion en minuscule

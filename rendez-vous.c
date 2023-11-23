@@ -62,10 +62,11 @@ void DisplayDuration(p_duration d){
 
 // Fonction relativent au rdv
 char* CreateObject(){
-    char *object = (char*) malloc(1000 * sizeof(char));
-    do {
-        printf("Quel est l'objet de ce rendez-vous ? ");
-    } while (fgets(object, 1000, stdin) == NULL);
+    char *object = (char*) malloc(100 * sizeof(char));
+    printf("Quel est l'objet de ce rendez-vous ? ");
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+    fgets(object, 100, stdin);
     return object;
 }
 p_rdv Create_rdv(p_date date, p_hour h, p_duration d, char* object){
@@ -88,9 +89,15 @@ void Display_rdv(p_rdv rdv){
     DisplayDate(rdv->date);
     printf(" ");
     DisplayHour(rdv->hour);
-    printf(" : %s\n\t", rdv->object);
+    printf(" : %s\t", rdv->object);
     DisplayDuration(rdv->duration);
     printf("\n");
+}
+void FreeRdv(p_rdv rdv){
+    free(rdv->date);
+    free(rdv->hour);
+    free(rdv->duration);
+    free(rdv);
 }
 
 // Fonction relativent à la liste de rdv
@@ -190,7 +197,6 @@ p_rdv Delete_rdv(l_rdv* mylist, p_date d, p_hour h){
             prev = cur;
             cur = cur->next;
         }
-        free(prev);
     }
     return cur;
 }
@@ -241,4 +247,10 @@ l_rdv Load_rdv(char* name){
 
     fclose(stock_rdv);
     return myRdvList;
+}
+void FreeRdvList(l_rdv myRdvlist){
+    while(!isEmptyRdv(myRdvlist)){
+        FreeRdv(Delete_rdv(&myRdvlist, myRdvlist.head->date, myRdvlist.head->hour));
+    }
+
 }
