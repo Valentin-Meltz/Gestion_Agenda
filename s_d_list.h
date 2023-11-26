@@ -45,5 +45,6 @@ p_cell search_classic (t_list, int);
 p_cell search (t_list, int);
 
 void createTxtComplexite();
+void etude_complexite_entier();
 
 #endif //GESTION_AGENDA_S_D_LIST_H

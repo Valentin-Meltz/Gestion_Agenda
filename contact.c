@@ -33,7 +33,7 @@ char* scanString(){ //Attention : Pas de saisie sécurisé
 p_contact Create_contact(char* name){
     p_contact mycontact = (p_contact) malloc(sizeof(t_contact));
     mycontact->level = 0;
-    mycontact->rdv = CreateL_rdv();
+    mycontact->rdv = Create_L_rdv();
     mycontact->next = (p_contact *) malloc(4 * sizeof(p_contact));
     for (int i = 0; i < 4 ; i++)
     {
@@ -63,7 +63,7 @@ l_contact CreateL_contact(){
 
 void Add_Head_Contact(l_contact* mylist, p_contact newcell, int level){
     // Si la liste est vide puis si la liste n'est pas  vide
-    if (isEmptyContact(*mylist, level)){
+    if (Is_Empty_Contact(*mylist, level)){
         mylist->head[level] = newcell;
         mylist->tail[level] = newcell;
     } else {
@@ -73,7 +73,7 @@ void Add_Head_Contact(l_contact* mylist, p_contact newcell, int level){
 }
 void Add_Tail_Contact(l_contact* mylist, p_contact newcell, int level){
     // Si la liste est vide puis si la liste n'est pas vide
-    if (isEmptyContact(*mylist, level)){
+    if (Is_Empty_Contact(*mylist, level)){
         mylist->head[level] = newcell;
         mylist->tail[level] = newcell;
     } else {
@@ -83,12 +83,12 @@ void Add_Tail_Contact(l_contact* mylist, p_contact newcell, int level){
 }
 void Add_contact(l_contact* mylist, p_contact newContact){
     // Calcul de niveau du contact
-    newContact->level = calculContactLevel(*mylist, newContact);
+    newContact->level = Calcul_Contact_Level(*mylist, newContact);
 
     //Boucle pour chaque niveau
     for (int i = 0; i < newContact->level; i++){
         // Si on ajoute par la tête
-        if (isEmptyContact(*mylist, i) || strcmp(newContact->name, mylist->head[i]->name) < 0)
+        if (Is_Empty_Contact(*mylist, i) || strcmp(newContact->name, mylist->head[i]->name) < 0)
             Add_Head_Contact(mylist, newContact, i);
 
 
@@ -133,7 +133,7 @@ void Maj_contact(l_contact* mylist, p_contact majContact){
         if(newLevel > majContact->level){
             for (int i = majContact->level; i < newLevel; i++){
                 // Si on ajoute par la tête
-                if (isEmptyContact(*mylist, i) || strcmp(majContact->name, mylist->head[i]->name) < 0)
+                if (Is_Empty_Contact(*mylist, i) || strcmp(majContact->name, mylist->head[i]->name) < 0)
                     Add_Head_Contact(mylist, majContact, i);
 
                     // Si on ajoute par la queue
@@ -178,12 +178,12 @@ void Maj_contact(l_contact* mylist, p_contact majContact){
     }
 }
 
-int isEmptyContact(l_contact mylist, int level){
+int Is_Empty_Contact(l_contact mylist, int level){
     return mylist.head[level] == NULL && mylist.tail[level] == NULL;
 }
-int calculContactLevel(l_contact myContactList, p_contact newContact){
+int Calcul_Contact_Level(l_contact myContactList, p_contact newContact){
     // Si la liste est vide ou qu'on insère par la tête
-    if(isEmptyContact(myContactList, 0) || strcmp(myContactList.head[0]->name, newContact->name) > 0) return 4;
+    if(Is_Empty_Contact(myContactList, 0) || strcmp(myContactList.head[0]->name, newContact->name) > 0) return 4;
     p_contact cur = myContactList.head[0], prev = cur;
 
     // Si on insère par la queue
@@ -203,7 +203,7 @@ int calculContactLevel(l_contact myContactList, p_contact newContact){
     if(newContact->name[0] == prev->name[0] && newContact->name[1] == prev->name[1] && newContact->name[2] != prev->name[2]) return 2;      // Si on insère au niveau 1
     return 1;
 }
-p_contact SearchClassique_contact(l_contact myContactList, char* name){
+p_contact Search_Classique_Contact(l_contact myContactList, char* name){
     p_contact cur = myContactList.head[0];
     while (cur != NULL && strcmp(cur->name, name) != 0){
         cptRecherche++;
@@ -211,9 +211,9 @@ p_contact SearchClassique_contact(l_contact myContactList, char* name){
     }
     return cur;
 }
-p_contact Search_contact(l_contact myContactList, char* name){
+p_contact Search_Contact(l_contact myContactList, char* name){
     int level = myContactList.max_level - 1;
-    while(isEmptyContact(myContactList, level)){
+    while(Is_Empty_Contact(myContactList, level)){
         level --;
     }
 
@@ -253,7 +253,7 @@ p_contact Search_contact(l_contact myContactList, char* name){
     }
     return NULL;
 }
-void DisplayAllContact(l_contact mylist){
+void Display_All_Contact(l_contact mylist){
     for(int i = 0; i < mylist.max_level; i++){
         printf("[list head_%d @-]-->", i);
         p_contact temp = mylist.head[i];
@@ -294,4 +294,20 @@ void Load_contact(l_contact* mylist){
     }
 
     fclose(stock_contact);
+}
+
+void Etude_Complexite_Contact(char* Name){
+    l_contact MyContactList = CreateL_contact();
+    Load_contact(&MyContactList);
+
+    Display_All_Contact(MyContactList);
+    printf("On recherche %s\n", Name);
+
+    cptRecherche = 0;
+    p_contact searchCalssicContact = Search_Classique_Contact(MyContactList, Name);
+    printf("Pour la recherche de %s au niveau 0, on a %d comparaison\n", searchCalssicContact->name, cptRecherche);
+
+    cptRecherche = 0;
+    p_contact searchMultiContact = Search_Contact(MyContactList, Name);
+    printf("Pour la recherche de %s multi-niveau, on a %d comparaison\n", searchMultiContact->name, cptRecherche);
 }

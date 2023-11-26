@@ -9,9 +9,9 @@ struct Date{
 };
 typedef struct Date t_date, *p_date;
 
-p_date CreateDate(int, int, int);
-int CompareDate(p_date, p_date);
-void DisplayDate(p_date);
+p_date Create_Date(int, int , int);
+int Compare_Date(p_date, p_date);
+void Display_Date(p_date);
 
 
 //Structure de l'heure et durée d'un rendez-vous
@@ -21,12 +21,12 @@ struct Hour{
 };
 typedef struct Hour t_hour, *p_hour, t_duration, *p_duration;
 
-p_hour CreateHour(int, int);
-int CompareHour(p_hour , p_hour);
-void DisplayHour(p_hour);
+p_hour Create_Hour(int, int);
+int Compare_Hour(p_hour , p_hour);
+void Display_Hour(p_hour);
 
-p_duration CreateDuration(int, int);
-void DisplayDuration(p_duration);
+p_duration Create_Duration(int, int);
+void Display_Duration(p_duration);
 
 //Structure d'un rendez-vous
 struct rendez_vous{
@@ -38,11 +38,11 @@ struct rendez_vous{
 };
 typedef struct rendez_vous t_rdv, *p_rdv;
 
-p_rdv Create_rdv(p_date, p_hour, p_duration, char*);
-char* CreateObject();
-int CompareRdv(p_rdv, p_rdv);
-void Display_rdv(p_rdv);
-void FreeRdv(p_rdv);
+p_rdv Create_Rdv(p_date, p_hour, p_duration, char*);
+char* Create_Object();
+int Compare_Rdv(p_rdv, p_rdv);
+void Display_Rdv(p_rdv);
+void Free_Rdv(p_rdv);
 
 //Structure d'une liste de rendez-vous
 struct list_rdv {
@@ -51,16 +51,16 @@ struct list_rdv {
 };
 typedef struct list_rdv l_rdv;
 
-l_rdv CreateL_rdv();
-int isEmptyRdv(l_rdv);
-int isRdvInList(l_rdv, p_date, p_hour);
-void Add_Head_rdv(l_rdv*, p_rdv);
-void Add_Tail_rdv(l_rdv*, p_rdv);
-void Add_rdv(l_rdv*, p_rdv);
-p_rdv Delete_rdv(l_rdv*, p_date, p_hour);
-void DisplayL_rdv(l_rdv);
-void Save_rdv(l_rdv, char*);
-l_rdv Load_rdv(char*);
-void FreeRdvList(l_rdv);
+l_rdv Create_L_rdv();
+int Is_Empty_Rdv(l_rdv);
+int Is_Rdv_In_List(l_rdv, p_date, p_hour);
+void Add_Head_Rdv(l_rdv*, p_rdv);
+void Add_Tail_Rdv(l_rdv*, p_rdv);
+void Add_Rdv(l_rdv*, p_rdv);
+p_rdv Delete_Rdv(l_rdv*, p_date, p_hour);
+void Display_L_Rdv(l_rdv);
+void Save_Rdv(l_rdv, char*);
+l_rdv Load_Rdv(char*);
+void Free_Rdv_List(l_rdv);
 
 #endif //GESTION_AGENDA_RENDEZ_VOUS_H

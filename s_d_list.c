@@ -9,7 +9,7 @@ static int cptRecherche = 0;
 
 //Partie 1
 p_cell Create_cell(int level, int val){
-    p_cell cell = (p_cell) malloc(sizeof(p_cell));      //Création de la cellule
+    p_cell cell = (p_cell) malloc(sizeof(t_cell));      //Création de la cellule
     cell->level = level;        //Attribution des valeurs
     cell->value = val;
     cell->next = (p_cell *) malloc(cell->level * sizeof(p_cell));   //Allocution dynamique d'un tableau de pointeur (**p_cell)
@@ -222,14 +222,14 @@ void createTxtComplexite(){
     FILE *log_file = fopen("log.txt","w");
     char format[] = "%d\t%d\t%s |%d|\t%s |%d|\n", *time_lvl0, *time_all_levels;
     int cptlvl0, cpt_all_levels, val;
-    p_cell searchCell;
+    p_cell searchCell = (p_cell) malloc(sizeof(t_cell));
 
     for(int i = 7; i < 15; i++) {
         t_list mylist = Create_list(i);
         int *levels = Create_levels(mylist);
         Add_levels(&mylist, levels);
 
-        val = (rand() % (mylist.tail[0]->value - 0 + 1)) + 0;   //vérifier la fonction rand jusqu'ou est si cela renvoie bien des entier
+        val = (rand() % (mylist.tail[0]->value - 0 + 1)) + 0;
 
         startTimer();
         searchCell = search_classic(mylist, val);
@@ -249,4 +249,25 @@ void createTxtComplexite(){
     }
 
     fclose(log_file);
+}
+
+void etude_complexite_entier(){
+    t_list mylist = Create_list(7);
+    int *levels = Create_levels(mylist);
+    Add_levels(&mylist, levels);
+    Display_All_list_aligne(mylist);
+
+    int val = (rand() % (mylist.tail[0]->value - 0 + 1)) + 0;
+    printf("On cherche la valeur : %d\n", val);
+
+    p_cell searchCell;
+    searchCell = search_classic(mylist, val);
+    printf("Pour la recherche au niveau 0, on a %d comparaison\n", cptRecherche);
+    cptRecherche = 0;
+
+    searchCell = search(mylist, val);
+    printf("Pour la recherche multi-niveau, on a %d comparaison\n", cptRecherche);
+    cptRecherche = 0;
+
+    createTxtComplexite();
 }
