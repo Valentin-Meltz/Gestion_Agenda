@@ -7,26 +7,28 @@
 
 static int cptRecherche = 0;
 
-char* scanString(){ //Attention : Pas de saisie sécurisé
-    // On saisit le nom et prénom
-    char *S_name = (char*) malloc(100 * sizeof(char)), *F_name = (char*) malloc(100 * sizeof(char));
-    printf("Saisir le nom (Prénom Nom) : ");
-    scanf("%s %s", S_name, F_name);
+char* scanString(void) {
+    char *name = (char*) malloc(100 * sizeof(char));
+    printf("Saisir le nom (Nom Prénom) : ");
 
-    // Convertion en minuscule
-    if (F_name[0] >= 65 && F_name[0] <= 90)
-    {
-        F_name[0] += 32;
-    }
-    if (S_name[0] >= 65 && S_name[0] <= 90)
-    {
-        S_name[0] += 32;
-    }
+    //On saisie le nom
+    fgets(name, 100, stdin);
 
-    // Construction de la chaine nom_prenom
-    strcat(F_name, "_");
-    strcat(F_name, S_name);
-    return F_name;
+    //On vérifie  si la syntaxe est correcte
+    int cpt = 0;
+    while(name[cpt] != '\n'){
+        //Si il s'agit d'un espace
+        if(name[cpt] == ' ')
+            name[cpt] = '_';
+
+            //Si il s'agit d'une majuscule
+        else if(name[cpt] >= 65 && name[cpt]  <= 90)
+            name[cpt] += 32;
+
+        cpt ++;
+    }
+    name[cpt] = '\0';
+    return name;
 }
 
 //Fonction relativent au contact
@@ -264,6 +266,34 @@ void Display_All_Contact(l_contact mylist){
         }
         printf("NULL\n");
     }
+}
+p_contact Completion(l_contact myContactList, char* name) {
+    //Si le nom correspond à quelqu'un dans la liste
+    if(Search_Contact(myContactList, name) != NULL) return Search_Contact(myContactList, name);
+
+    //Si le  nom ne correspond pas
+    //On dresse une liste de nom qui commence bien
+    p_contact temp = myContactList.head[0];
+    while(temp != NULL){
+        //Si le nom conviens
+        if(strstr(temp->name, name)) {
+            //On affiche
+            printf("%c", temp->name[0] - 32);
+            int i = 1;
+            while(temp->name[i] != '_') {
+                printf("%c", temp->name[i++]);
+            }
+            i++;
+            printf(" %c", temp->name[i++] - 32);
+            while(temp->name[i] != '\0'){
+                printf("%c", temp->name[i++]);
+            }
+            printf(" | ");
+        }
+        temp = temp->next[0];
+    }
+    printf("\n");
+    return NULL;
 }
 
 void Save_contact(l_contact mylist){

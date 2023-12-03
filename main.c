@@ -2,58 +2,17 @@
 #include <stdlib.h>
 
 #include "module timer-20231031/timer.h"
+#include "lib.h"
 #include "contact.h"
 #include "rendez-vous.h"
 #include "s_d_list.h"
-
-int SecureAdd(int Level_S) {
-    int val = 0;
-    switch (Level_S) {
-        case 1 : {
-            printf("1 | Mes contact.\n2 | Rechercher un contact.\n3 | Nouveau contact.\n4 | Comment fonctionne l'application.\n5 | Sauvegarder et Quitter\n\n");
-            printf("$ ");
-            scanf("%d", &val);
-            while (val < 1 || val > 5)
-            {
-                printf("Valeur incorrecte, veuiller saisir une autre valeur : ");
-                printf("$ ");
-                scanf(" %d", &val);
-            }
-            return val;
-        }
-        case 2 : {
-            printf("\nEntrer 0 Pour revenir en arriere.\n");
-            printf("$ ");
-            scanf("%d",&val);
-            while (val != 0)
-            {
-                printf("Valeur incorrecte, veuiller saisir une autre valeur : ");
-                printf("$ ");
-                scanf(" %d", &val);
-            }
-            return val;
-        }
-        default : {
-            printf("1 | Mes rendez-vous\n2 | Ajouter un rendez-vous\n3 | Suprimer un rendez-vous\n0 | Retour\n\n");
-            printf("$ ");
-            scanf("%d",&val);
-            while (val < 0 || val > 3)
-            {
-                printf("Valeur incorrecte, veuiller saisir une autre valeur : ");
-                printf("$ ");
-                scanf(" %d", &val);
-            }
-            return val;
-        }
-    }
-}
 
 void main_rdv(p_contact contact){
     contact->rdv = Load_Rdv(contact->name);
 
     while(1) {
-        printf("%s :\n", contact->name); //Fonction de Tuan pour bien afficher le contact
-        int val = SecureAdd(3);
+        printf("%s :\n", contact->name);
+        int val = scanRdv();
         switch (val) {
             case 1: {
                 //Si la liste est vide
@@ -63,7 +22,7 @@ void main_rdv(p_contact contact){
                     //Si la liste n'est pas vide
                 else Display_L_Rdv(contact->rdv);
 
-                int val1 = SecureAdd(2);
+                scanBack();
                 break;
             }
 
@@ -84,6 +43,7 @@ void main_rdv(p_contact contact){
                     scanf("%d,%d", &dh, &dmin);
                 } while (dh < 0 || min < 0 || min > 59);
 
+                eraseBuffer();
                 Add_Rdv(&contact->rdv, Create_Rdv(Create_Date(jour, mois, annee), Create_Hour(h, min), Create_Duration(dh, dmin), Create_Object()));
                 break;
             }
@@ -129,7 +89,7 @@ int main() {
     //Boucle infini
     while(1) {
         printf("\t\t__MON AGENDA__\n");
-        int val = SecureAdd(1);
+        int val = scanMain();
         switch (val) {
             case 1: {
                 // Affichage des contact
@@ -139,21 +99,31 @@ int main() {
                 if(Is_Empty_Contact(MyContactList, 0))
                     printf("Vous n'avez aucun contact.\n");
 
-                    //Si la liste n'est pas vide
+                //Si la liste n'est pas vide
                 else {
                     p_contact temp = MyContactList.head[0];
                     while(temp != NULL){
                         p_contact cur = temp;
+                        printf("%c :\n", temp->name[0] - 32);
                         while(cur != temp->next[3]){
-                            printf("%s, ", cur->name);
+                            printf("%c", cur->name[0] - 32);
+                            int i = 1;
+                            while(cur->name[i] != '_'){
+                                printf("%c", cur->name[i++]);
+                            }
+                            i++;
+                            printf(" %c", cur->name[i++] - 32);
+                            while(cur->name[i] != '\0'){
+                                printf("%c", cur->name[i++]);
+                            }
+                            printf("\n");
                             cur = cur->next[0];
                         }
                         printf("\n");
                         temp = temp->next[3];
                     }
                 }
-
-                int val1 = SecureAdd(2);
+                scanBack();
                 break;
             }
 
@@ -161,24 +131,35 @@ int main() {
                 //Si la liste est vide
                 if(Is_Empty_Contact(MyContactList, 0)) {
                     printf("Vous n'avez aucun contact\n");
-                    int val1 = SecureAdd(2);
+                    scanBack();
                 }
 
-                    //Si la liste n'est pas vide
+                //Si la liste n'est pas vide
                 else {
-                    p_contact contact = Search_Contact(MyContactList, scanString());
+                    p_contact contact = NULL;
 
-                    //Si il n'existe pas
-                    if (contact == NULL)
-                        printf("Ce contact n'existe pas\n");
+                    //On vide le buffer
+                    eraseBuffer();
 
-                        //Si il existe
-                    else main_rdv(contact);
+                    //On fait la complétion automatique
+                    do{
+                        char *name = scanString();
+                        contact = Completion(MyContactList, name);
+                        free(name);
+                    } while(contact == NULL);
+
+                    //On lance le main pour un contact
+                    main_rdv(contact);
                 }
+
                 break;
             }
 
             case 3: {
+                //On vide le buffer
+                eraseBuffer();
+
+                //On crée un nouveau contact
                 p_contact contact = Create_contact(scanString());
                 Add_contact(&MyContactList, contact);
                 Save_Rdv(contact->rdv, contact->name);
@@ -189,10 +170,17 @@ int main() {
                 printf("Voici comment fonctionne cette aplication : Le principe des liste à niveau.\n");
                 etude_complexite_entier();
                 printf("\n\n");
+
+                //On vide le buffer
+                eraseBuffer();
+
                 Etude_Complexite_Contact(scanString());
                 printf("\n\n");
+
+                scanBack();
                 break;
             }
+
             default: {
                 Save_contact(MyContactList);
                 printf("A Bientôt");

@@ -64,8 +64,6 @@ void Display_Duration(p_duration d){
 char* Create_Object(){
     char *object = (char*) malloc(100 * sizeof(char));
     printf("Quel est l'objet de ce rendez-vous ? ");
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF);
     fgets(object, 100, stdin);
     return object;
 }

@@ -39,7 +39,7 @@ struct rendez_vous{
 typedef struct rendez_vous t_rdv, *p_rdv;
 
 p_rdv Create_Rdv(p_date, p_hour, p_duration, char*);
-char* Create_Object();
+char* Create_Object(void);
 int Compare_Rdv(p_rdv, p_rdv);
 void Display_Rdv(p_rdv);
 void Free_Rdv(p_rdv);
@@ -51,7 +51,7 @@ struct list_rdv {
 };
 typedef struct list_rdv l_rdv;
 
-l_rdv Create_L_rdv();
+l_rdv Create_L_rdv(void);
 int Is_Empty_Rdv(l_rdv);
 int Is_Rdv_In_List(l_rdv, p_date, p_hour);
 void Add_Head_Rdv(l_rdv*, p_rdv);
