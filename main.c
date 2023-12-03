@@ -10,11 +10,16 @@
 void main_rdv(p_contact contact){
     contact->rdv = Load_Rdv(contact->name);
 
+    //On efface la console
+    clearScreen();
     while(1) {
         printf("%s :\n", contact->name);
         int val = scanRdv();
         switch (val) {
             case 1: {
+                //On efface la console
+                clearScreen();
+
                 //Si la liste est vide
                 if(Is_Empty_Rdv(contact->rdv))
                     printf("Vous n'avez pas de rendez vous avec ce contact.\n");
@@ -27,6 +32,9 @@ void main_rdv(p_contact contact){
             }
 
             case 2 : {
+                //On efface la console
+                clearScreen();
+
                 int jour, mois, annee, h, min, dh, dmin;
                 do {
                     printf("Entrer la date (J/M/A) : ");
@@ -49,6 +57,9 @@ void main_rdv(p_contact contact){
             }
 
             case 3 : {
+                //On efface la console
+                clearScreen();
+
                 int jour, mois, annee, h, min;
                 do {
                     printf("Entrer la date (J/M/A) : ");
@@ -86,12 +97,18 @@ int main() {
     l_contact MyContactList = CreateL_contact();
     Load_contact(&MyContactList);
 
+    //On efface la console
+    clearScreen();
+
     //Boucle infini
     while(1) {
         printf("\t\t__MON AGENDA__\n");
         int val = scanMain();
         switch (val) {
             case 1: {
+                //On crée notre liste de contact
+                clearScreen();
+
                 // Affichage des contact
                 printf("\t\t__Mes Contacts__\n");
 
@@ -128,6 +145,9 @@ int main() {
             }
 
             case 2: {
+                //On crée notre liste de contact
+                clearScreen();
+
                 //Si la liste est vide
                 if(Is_Empty_Contact(MyContactList, 0)) {
                     printf("Vous n'avez aucun contact\n");
@@ -156,6 +176,9 @@ int main() {
             }
 
             case 3: {
+                //On crée notre liste de contact
+                clearScreen();
+
                 //On vide le buffer
                 eraseBuffer();
 
@@ -167,6 +190,10 @@ int main() {
             }
 
             case 4:{
+                //On crée notre liste de contact
+                clearScreen();
+
+                //On explique comment fonctionne l'application avec des entiers
                 printf("Voici comment fonctionne cette aplication : Le principe des liste à niveau.\n");
                 etude_complexite_entier();
                 printf("\n\n");
@@ -174,6 +201,7 @@ int main() {
                 //On vide le buffer
                 eraseBuffer();
 
+                //On explique comment fonctionne l'application avec des contacts
                 Etude_Complexite_Contact(scanString());
                 printf("\n\n");
 
@@ -182,6 +210,10 @@ int main() {
             }
 
             default: {
+                //On crée notre liste de contact
+                clearScreen();
+
+                //On sauvegarde et quitte le programme
                 Save_contact(MyContactList);
                 printf("A Bientôt");
                 exit(EXIT_SUCCESS);
