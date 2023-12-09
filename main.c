@@ -198,11 +198,19 @@ int main() {
                 etude_complexite_entier();
                 printf("\n\n");
 
+                p_contact contact = NULL;
                 //On vide le buffer
                 eraseBuffer();
 
+                //On fait la complétion automatique
+                do{
+                    char *name = scanString();
+                    contact = Completion(MyContactList, name);
+                    free(name);
+                } while(contact == NULL);
+
                 //On explique comment fonctionne l'application avec des contacts
-                Etude_Complexite_Contact(scanString());
+                Etude_Complexite_Contact(contact->name);
                 printf("\n\n");
 
                 scanBack();

@@ -6,7 +6,7 @@
 struct s_d_cell {
     int value;
     int level;
-    struct s_d_cell **next;     //Liste de tous les pointeurs next de chaque niveau
+    struct s_d_cell **next; //Liste de tous les pointeurs next de chaque niveau
 };
 typedef struct s_d_cell t_cell, *p_cell;
 
@@ -17,8 +17,8 @@ void Display_cell(p_cell);  //affichage d'une cellule
 //Structure d'une list à max_level niveau maximum
 struct s_d_list {
     int max_level;
-    t_cell **head;      //Liste de tous les pointeurs head de chaque niveau
-    t_cell **tail;      //Liste de tous les pointeurs tail de chaque niveau
+    t_cell **head;              //Liste de tous les pointeurs head de chaque niveau
+    t_cell **tail;              //Liste de tous les pointeurs tail de chaque niveau
 };
 typedef struct s_d_list t_list;
 
