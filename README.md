@@ -17,7 +17,7 @@
 >   Entrer **4** pour découvrir le fonctionnement de l'application et le principe des liste à niveau.\
 >   Entrer **5** pour sauvegarder les contacts et quittter l'appilcation
 
-### Saisie d'un contacte
+### Saisie d'un contact
 >   Saisisser un le nom puis le prénom d'un contact avec la première lettre du nom et du prénom en majuscule, ou saisisser une partie du nom ou du prénom du contact voulue pour avoir accès a tous les nom des contacts possédans cette sous chaine de caractère.\
 
 ### Retour au menu principal
