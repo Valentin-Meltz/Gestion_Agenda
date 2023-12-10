@@ -15,7 +15,7 @@ void eraseBuffer(void) {
 }
 
 int scanMain(void) {
-    printf("1 | Mes contact.\n2 | Rechercher un contact.\n3 | Nouveau contact.\n4 | Comment fonctionne l'application.\n5 | Sauvegarder et Quitter\n\n");
+    printf("1 | Mes contacts.\n2 | Rechercher un contact.\n3 | Nouveau contact.\n4 | Comment fonctionne l'application.\n5 | Sauvegarder et Quitter\n\n");
     printf("$ ");
 
     int val= 0;
